@@ -4,7 +4,7 @@ from dataset.models import Dataset
 from user.models import User
 from werkzeug import secure_filename
 from dataset.forms import UploadForm
-from user.decorators import login_required, approval_required, admin_required
+from user.decorators import login_required, approval_required, contributor_required, admin_required
 import logging
 import time
 
@@ -46,10 +46,11 @@ def dataset():
 
 
 @app.route('/dataset/delete', methods=('POST',))
-@approval_required
+@contributor_required
 def delete_dataset():
     if (request.method == 'POST'):
         archive_ids = request.form.getlist('archive_id')
+        edit_archive_id = request.form.getlist('edit_archive_id')
         for id in archive_ids:
             dataset = Dataset.query.filter_by(
                 id=id
@@ -57,4 +58,31 @@ def delete_dataset():
             if (dataset.user == session.get('id') or session.get('is_admin')):
                 db.session.delete(dataset)
         db.session.commit()
+        if edit_archive_id and edit_archive_id[0]:
+            dataset_id = edit_archive_id[0]
+            print('EDITING DATASET', dataset_id)
+            return redirect(url_for('edit_dataset',
+                                    dataset_id=dataset_id))
+    return redirect(url_for('dataset'))
+
+
+@app.route('/dataset/edit/<int:dataset_id>/', methods=('GET', 'POST'))
+@contributor_required
+def edit_dataset(dataset_id):
+    user_id = session.get('id')
+    user = User.query.filter_by(
+        id=user_id,
+    ).first()
+    dataset = Dataset.query.filter_by(
+        id=dataset_id
+    ).first()
+    if (dataset.user == session.get('id') or session.get('is_admin')):
+        if (request.method == 'POST'):
+            dataset.name = request.form['name']
+            dataset.description = request.form['description']
+            db.session.commit()
+            return redirect(url_for('dataset'))
+        return render_template('dataset/edit_dataset.html', dataset=dataset)
+    error = 'Invalid permissons to edit the dataset'
+    flash(error, 'error')
     return redirect(url_for('dataset'))

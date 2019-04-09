@@ -58,6 +58,9 @@
                         <div>Description</div>
                     </th>
                     <th>
+                        <div>Edit</div>
+                    </th>
+                    <th>
                         <div>Delete</div>
                     </th>
                 </tr>
@@ -74,6 +77,15 @@
                         <div>
                             <p>{{ archive.description }}</p>
                         </div>
+                    </td>
+                    <td>
+                        {% if user.is_admin or user.id == archive.user %}
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" name="edit_archive_id" type="radio" value="{{ archive.id }}">
+                            </label>
+                        </div>
+                        {% endif %}
                     </td>
                     <td>
                         {% if user.is_admin or user.id == archive.user %}

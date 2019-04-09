@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Couinterfeit-IC{% endblock %}
+{% block head %} {{ super() }}{% endblock %}
+{% block content %}
+
+
+<div class="container grey_block">
+    <h3 class="text-center">Edit Dataset</h3>
+
+    {% include "_flashmessages.html" %}
+
+
+    <form action="{{ url_for('edit_dataset', dataset_id=dataset.id)}}" method="post">
+        <table class="table formal text-center">
+            <thead>
+            </thead>
+            <tbody>
+                {% if dataset %}
+                <tr>
+                    <td>
+                        <div>
+                            <label for="datasetName">Dataset Name</label>
+                            <input type="text" class="form-control" id="{{ dataset.id }}" name="name"
+                                value="{{ dataset.name }}">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+
+                    <td>
+                        <div>
+                            <label for="datasetName">Dataset Description</label>
+                            <input type="text" class="form-control" id="{{ dataset.id }}" name="description"
+                                value="{{ dataset.description }}">
+                        </div>
+                    </td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <td>
+                        <button type="submit" id="deletebutton" class="btn btn-danger center-block">Submit</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+
+{% endblock %}
