@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}Couinterfeit-IC{% endblock %}
+{% block head %} {{ super() }}
+<link href="{{ url_for('static', filename='css/resource.css') }}" rel="stylesheet">{% endblock %}
+{% block content %}
+
+<div class="container grey_block">
+	<div class="row col-md-3">
+		<h2>Books</h2>
+	</div>
+	<div class="row section">
+		<div class="col-md-3">
+			<img src="{{url_for('static', filename='images/site_images/book.jpg')}}" class="img-thumbnail rounded float-left"
+			 alt="Book">
+		</div>
+		<div class="col-md-6">
+			</br>
+			<h3>Counterfeit Integrated Circuits</h3>
+			<h5>Detection and Avoidance</h5>
+			<h5>
+				<strong>Authors: </strong>Tehranipoor Mark (Mohammad), Guin Ujjwal, Forte Domenic</h5>
+			<a class="btn btn-outline-info offset-10" target="_blank" href="http://www.springer.com/us/book/9783319118239" role="button">Buy</a>
+		</div>
+	</div>
+
+	<div class="row col-md-3">
+		<h2>Leica DVM6</h2>
+	</div>
+	<div class="row section">
+		<div class="col-md-3 ">
+			<img src="{{url_for('static', filename='images/site_images/leica_microscope.jpg')}}" class="img-thumbnail rounded float-left"
+			 alt="Leica Microscope">
+		</div>
+		<div class="col-md-6">
+			</br>
+			<h5>The chip defect images in the database are captured from Leica DVM6 microscope.</h5>
+			<a class="offset-9" target="_blank" href="http://fics.institute.ufl.edu/facilities/nanoscale-imaging-capabilities/">
+				Read more!
+			</a>
+		</div>
+	</div>
+
+	<div class="row col-md-12">
+		<h2>More information on Counterfeit Defects and Taxonomies</h2>
+	</div>
+	<div class="row section">
+		<ol>
+			<li>
+				<p class="text_font">SAE AS6171 Standard- Test Methods Standard; General Requirements, Suspect/Counterfeit,
+					Electrical, Electronic, and Electromechanical
+					Parts. </p>
+				<a target="_blank" href="http://standards.sae.org/wip/as6171/ ">Download</a>
+			</li>
+			<li>
+				<p class="text_font">SAE AS5553 Standard- Counterfeit electronic parts; avoidance, detection, mitigation, and
+					disposition.</p>
+				<a target="_blank" href="http://standards.sae.org/as5553/ ">Download</a>
+			</li>
+			<li>
+				<p class="text_font">Guin, U., DiMase, D., Tehranipoor, M. (2014). Counterfeit integrated circuits: detection,
+					avoidance, and the challenges
+					ahead. Journal of Electronic Testing, 30(1), 9-23.
+				</p>
+			</li>
+
+			<li>
+				<p class="text_font">Guin, U., DiMase, D., Tehranipoor, M. (2014). A comprehensive framework for counterfeit defect
+					coverage analysis and
+					detection assessment. Journal of Electronic Testing, 30(1), 25-40.
+				</p>
+			</li>
+
+			<li>
+				<p class="text_font">Guin, U., Huang, K., DiMase, D., Carulli, J. M., Tehranipoor, M., Makris, Y. (2014).
+					Counterfeit integrated circuits:
+					a rising threat in the global semiconductor supply chain. Proceedings of the IEEE, 102(8), 1207-1228.
+				</p>
+			</li>
+
+		</ol>
+	</div>
+
+	<div class="row col-md-12">
+		<h2>Links</h2>
+	</div>
+	<div class="row section">
+		<ul>
+			<li>
+				<!-- <span class="glyphicon glyphicon-chevron-right"></span> -->
+				<a target="_blank" href="https://www.trust-hub.org/index.php?option=com_content&view=article&id=1&Itemid=2">Trust
+					Hub</a>
+			</li>
+			<li>
+				<!-- <span class="glyphicon glyphicon-chevron-right"></span> -->
+				<a target="_blank" href="https://www.facebook.com/groups/964046970309654/"> Facebook page </a>
+			</li>
+			<li>
+				<!-- <span class="glyphicon glyphicon-chevron-right"></span> -->
+				<a target="_blank" href="https://www.sae.org/servlets/works/committeeHome.do?comtID=TEAG19 /"> G-19 Counterfeit
+					Electronic Parts Committee </a>
+			</li>
+			<li>
+				<!-- <span class="glyphicon glyphicon-chevron-right"></span> -->
+				<a target="_blank" href="http://counterfeitparts.sae.org/"> counterfeitparts.sae.org </a>
+			</li>
+			<li>
+				<!-- <span class="glyphicon glyphicon-chevron-right"></span> -->
+				<a target="_blank" href="http://www.aeri.com/counterfeit-electronic-component-detection/">
+					counterfeitparts.wordpress.com </a>
+			</li>
+			<li>
+				<!-- <span class="glyphicon glyphicon-chevron-right"></span> -->
+				<a target="_blank" href="http://www.smtcorp.com/counterfeit-detection"> www.smtcorp.com/counterfeit-detection </a>
+			</li>
+			<li>
+				<!-- <span class="glyphicon glyphicon-chevron-right"></span> -->
+				<a target="_blank" href="http://www.aeri.com/counterfeit-electronic-component-detection/">
+					www.aeri.com/counterfeit-electronic-component-detection </a>
+			</li>
+		</ul>
+	</div>
+
+</div>
+
+{% endblock %}

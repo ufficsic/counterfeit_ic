@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Couinterfeit-IC{% endblock %}
+{% block head %} {{ super() }}{% endblock %}
+{% block content %}
+
+
+<div class="container grey_block">
+    <h3 class="text-center">Select The Sample Id to edit.</h3>
+
+    {% include "_flashmessages.html" %}
+
+    <p>To edit a sample: </p>
+    <ol>
+        <li>Select the sample and download the zip package.</li>
+        <li>The selected sample will be deleted from the dataset internally.</li>
+        <li>Make changes in the downloaded package and reupload the sample through
+            <a href="{{url_for('add_components')}}">Add</a> page.</li></br>
+    </ol>
+
+    <form action="{{ url_for('edit_defect_sample')}}" method="post">
+        <table class="table formal text-center">
+            <thead>
+                <tr>
+                    <th>
+                        <div>Manufacturer</div>
+                    </th>
+                    <th>
+                        <div>Product</div>
+                    </th>
+                    <th>
+                        <div>Sample creation date</div>
+                    </th>
+                    <th>
+                        <div>Select to download & Delete</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sample in samples %}
+                <tr>
+                    <td>
+                        <div>
+                            {{ sample.manufacturer }}
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            {{ sample.product }}
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            {{ sample.sample_creation_date }}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" name="sample_id" type="radio" value="{{ sample.sample_id }}">
+                            </label>
+                        </div>
+                    </td>
+
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="submit" id="deletebutton" class="btn btn-danger center-block">Submit</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}Couinterfeit-IC{% endblock %}
+{% block head %} {{ super() }}{% endblock %}
+{% block content %}
+
+<div class="container grey_block">
+
+    {% include "_flashmessages.html" %}
+
+    <h2 class="body_heading">Product Report for {{ product.name }} </h2>
+
+    <table class="formal text-center">
+        <tr>
+            <td>Manufacturer</td>
+            <td>{{ manufacturer.name.capitalize() }}</td>
+        </tr>
+        <tr>
+            <td>Product Specification: </td>
+            <td>
+                <div>
+                    <a class="" href="{{ pspec.url(product.spec_file_name) }}">
+                        view spec</a>
+                </div>
+            </td>
+
+        </tr>
+        <tr>
+            <td>Product Image: </td>
+            <td>
+                <div>
+                    <a class="" href="{{ pimage.url(product.spec_image_name) }}">
+                        view image</a>
+                </div>
+            </td>
+        </tr>
+        <!-- <tr>
+            <td>Total Number of Components in Database: </td>
+            <td>{{ product.name }}</td>
+        </tr> -->
+    </table>
+
+
+    <!-- <div>
+        <h3>Most Common Identified Defects in {{ product.name }} </h3>
+    </div> -->
+    <table class="table formal text-center">
+        <!-- <caption>
+            <h3>Most Common Identified Defects in ***** </h3>
+        </caption> -->
+
+        <thead>
+            <tr>
+                <th>
+                    <div>Defect Name</div>
+                </th>
+                <th>
+                    <div>Image</div>
+                </th>
+                <th>
+                    <div>Occurrences in Product</div>
+                </th>
+                <th>
+                    <div>Frequency: Within Product</div>
+                </th>
+                <th>
+                    <div>Frequency: All Tested Products</div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for report in reports %}
+            <tr>
+                <td>
+                    <div>
+                        <a href="{{ url_for('defect_report', defect_id=report.DefectType.id) }}">
+                            {{ report.DefectType.name }}</a>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <a class="" href="{{ url_for('static', filename=defect_image_folder + '/' + report.image ) }}">view</a>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        {{ report.occurences }}
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <p>frequency</p>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <p>frequency</p>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}

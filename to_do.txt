@@ -1,0 +1,33 @@
+### TODO List
+0. User Panel
+        approved : view and download the dataset
+        contributor : add and edit data
+        admin : change user permission and delete data
+        Delete : delete a user but keep the content
+
+1. Product panel
+        Approve Products (Contrinutor permissions)
+2. Add
+        Check if sample is class is required
+        check filenames
+        Sample_id meaning
+        Adding product without spec and image
+        
+3. View
+        Download images option
+4. Edit
+5. Schema Design and Table implementations
+6. Dataset
+        Make user not null
+        Progress bar
+        Description or multi upload or description with multiupload
+        Delete The file
+        All users can see the files
+        Update permissions according to the user
+7. Batch downloads.
+        Manufacturer : All and individual defects
+        Defect types 
+
+8. User Permisssions for Add, View and edit.
+9. implement exception handling
+10. Fix URL queries

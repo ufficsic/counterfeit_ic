@@ -1,0 +1,835 @@
+{% extends "base.html" %}
+{% block title %}Couinterfeit-IC{% endblock %}
+{% block head %} {{ super() }}
+<link href="{{ url_for('static', filename='css/taxonomy.css') }}" rel="stylesheet">{% endblock %}
+{% block content %}
+
+<div class="container taxo grey_block">
+    <div class='trojan-outer'>
+        <div class='trojan-inner'>
+            <div class='top'>
+                <!-- HARDWARE TROJANS --><a id="DefectTag" class='root trojan-category'> Defects </a>
+                <div class='bar-divide'></div>
+            </div>
+            <!-- end top -->
+            <div class="row-class">
+                <div class='middle-group-one'>
+                    <div class='bar-divide-one'></div>
+                    <!-- HARDWARE TROJANS --><a id="MechanicalTag" class='middle-first trojan-category'> Mechanical </a>
+                    <!--                            <a id="BenchmarkTag" class='middle-second trojan-category'> Defects </a>-->
+                    <div class='bar-divide-one-bel'></div>
+                    <div class='bottom'>
+                        <div class='trojan-group tg'>
+                            <div class='bar-divide-tl1'></div>
+                            <!-- INSERTION PHASE --><a id="MechLeadTag" class='trojan-category'> Lead/Balls/Column </a>
+                            <ul class='sub-tree tl1'>
+                                <li class='arrow'>
+                                    <!-- SPECIFICATION --><a id="MLDentsTag" class='trojan-tag'> ML1: Dents/ Damaged/
+                                        Bent </a> </li>
+                                <li class='arrow'>
+                                    <!-- DESIGN --><a id="MLReworkedTag" class='trojan-tag'> ML2: Reworked </a> </li>
+                                <li class='arrow'>
+                                    <!-- FABRICATION --><a id="MLDimeTag" class='trojan-tag'> ML3: Incorrect Dimensions
+                                    </a> </li>
+                                <li class='arrow'>
+                                    <!-- TESTING --><a id="MLMaterialsTag" class='trojan-tag'> ML4: Wrong Materials </a>
+                                </li>
+                                <li class='arrow'>
+                                    <!-- ASSEMBLY AND PACKAGE --><a id="MLColorTag" class='trojan-tag'> ML5: Color
+                                        Variations </a> </li>
+                                <li class='arrow'>
+                                    <!-- ASSEMBLY AND PACKAGE --><a id="MLToolingTag" class='trojan-tag'> ML6: Tooling
+                                        Marks </a> </li>
+                                <li class='arrow'>
+                                    <!-- ASSEMBLY AND PACKAGE --><a id="MLMisalignTag" class='trojan-tag'> ML7:
+                                        Misaligned/ missing Balls/ Columns </a> </li>
+                                <li class='arrow'>
+                                    <!-- ASSEMBLY AND PACKAGE --><a id="MLDistortTag" class='trojan-tag'> ML8:
+                                        Distorted/ Non-Uniform Balls/ Columns </a> </li>
+                                <li class='arrow'>
+                                    <!-- ASSEMBLY AND PACKAGE --><a id="MLLeadTag" class='trojan-tag'> ML9: Lead
+                                        Reattachment </a> </li>
+                            </ul>
+                        </div>
+                        <div class='trojan-group tg'>
+                            <div class='bar-divide-tl2'></div>
+                            <!-- ABSTRACTION LEVEL --><a id="MechPackageTag" class='trojan-category'> Package </a>
+                            <ul class='sub-tree tl2'>
+                                <li class='arrow'>
+                                    <!-- SPECIFICATION --><a id="MPSandTag" class='trojan-tag'> MP1: Sanding/ Gringing
+                                        Marks </a> </li>
+                                <li class='arrow'>
+                                    <!-- DESIGN --><a id="MPMarkTag" class='trojan-tag'> MP2: Markings </a> </li>
+                                <li class='arrow'>
+                                    <!-- FABRICATION --><a id="MPBurnTag" class='trojan-tag'> MP3: Burned Markings </a>
+                                </li>
+                                <li class='arrow'>
+                                    <!-- TESTING --><a id="MPGhostTag" class='trojan-tag'> MP4: Ghost Markings </a>
+                                </li>
+                                <li class='arrow'>
+                                    <!-- ASSEMBLY AND PACKAGE --><a id="MPColorTag" class='trojan-tag'> MP5: Color
+                                        Variations/ Fade </a> </li>
+                                <li class='arrow'>
+                                    <!-- ASSEMBLY AND PACKAGE --><a id="MPTextureTag" class='trojan-tag'> MP6: Improper
+                                        Textures </a> </li>
+                                <li class='arrow'>
+                                    <!-- ASSEMBLY AND PACKAGE --><a id="MPExtraneousTag" class='trojan-tag'> MP7:
+                                        Extraneous Markings </a> </li>
+                                <li class='arrow'>
+                                    <!-- ASSEMBLY AND PACKAGE --><a id="MPDirtyTag" class='trojan-tag'> MP8: Dirty
+                                        Cavities </a> </li>
+                                <li class='arrow'>
+                                    <!-- ASSEMBLY AND PACKAGE --><a id="MPDimeTag" class='trojan-tag'> MP9: Incorrect
+                                        Dimensions/ Weight </a> </li>
+                                <li class='arrow'>
+                                    <!-- ASSEMBLY AND PACKAGE --><a id="MPFineTag" class='trojan-tag'> MP10: Fine/
+                                        Gross Leak (Hermatic) </a> </li>
+                                <li class='arrow'>
+                                    <!-- ASSEMBLY AND PACKAGE --><a id="MPMoldTag" class='trojan-tag'> MP11: Package
+                                        Mold Variations </a> </li>
+                                <li class='arrow'>
+                                    <!-- ASSEMBLY AND PACKAGE --><a id="MPDamageTag" class='trojan-tag'> MP12: Package
+                                        Damage </a> </li>
+                                <li class='arrow'>
+                                    <!-- ASSEMBLY AND PACKAGE --><a id="MPResurfaceTag" class='trojan-tag'> MP13:
+                                        Resurfacing/ blacktopping </a> </li>
+                                <li class='arrow'>
+                                    <!-- ASSEMBLY AND PACKAGE --><a id="MPMarkerTag" class='trojan-tag'> MP14: Pin 1
+                                        marker filled/ missing </a> </li>
+                            </ul>
+                        </div>
+                        <div class='trojan-group tg'>
+                            <div class='bar-divide-tl3'></div>
+                            <!-- ACTIVATION MECHANISM --><a id="MechBondTag" class='trojan-category'> Bond Wires </a>
+                            <ul class='sub-tree tl3'>
+                                <li class='arrow'>
+                                    <!-- SPECIFICATION --><a id="MBMissingTag" class='trojan-tag'> MB1: Missing Wires
+                                    </a> </li>
+                                <li class='arrow'>
+                                    <!-- DESIGN --><a id="MBConnectTag" class='trojan-tag'> MB2: Poor Connection </a>
+                                </li>
+                                <li class='arrow'>
+                                    <!-- FABRICATION --><a id="MBBrokenTag" class='trojan-tag'> MB3: Broken Wires </a>
+                                </li>
+                                <li class='arrow'>
+                                    <!-- TESTING --><a id="MBDressTag" class='trojan-tag'> MB4: Poor Inconsistent Lead
+                                        Dress/ Lead Frame </a> </li>
+                                <li class='arrow'>
+                                    <!-- ASSEMBLY AND PACKAGE --><a id="MBReworkTag" class='trojan-tag'> MB5: Reworked
+                                        Wire Bonds </a> </li>
+                                <li class='arrow'>
+                                    <!-- ASSEMBLY AND PACKAGE --><a id="MBPullTag" class='trojan-tag'> MB6: Bond Pull
+                                        Strength </a> </li>
+                            </ul>
+                        </div>
+                        <div class='trojan-group tg'>
+                            <div class='bar-divide-tl4'></div>
+                            <!-- EFFECT --><a id="MechDieTag" class='trojan-category'> Die </a>
+                            <ul class='sub-tree tl4'>
+                                <li class='arrow'>
+                                    <!-- SPECIFICATION --><a id="MDMissingTag" class='trojan-tag'> MD1: Missing Die </a>
+                                </li>
+                                <li class='arrow'>
+                                    <!-- DESIGN --><a id="MDWrongTag" class='trojan-tag'> MD2: Wrong Die </a> </li>
+                                <li class='arrow'>
+                                    <!-- FABRICATION --><a id="MDDelaminateTag" class='trojan-tag'> MD3: Delamination
+                                    </a> </li>
+                                <li class='arrow'>
+                                    <!-- TESTING --><a id="MDCracksTag" class='trojan-tag'> MD4: Gross Cracks </a> </li>
+                                <li class='arrow'>
+                                    <!-- ASSEMBLY AND PACKAGE --><a id="MDImproperTag" class='trojan-tag'> MD5:
+                                        Improper Die Markings </a> </li>
+                                <li class='arrow'>
+                                    <!-- ASSEMBLY AND PACKAGE --><a id="MDDamageTag" class='trojan-tag'> MD6: Die
+                                        Damage/ Extraneous Markings </a> </li>
+                                <li class='arrow'>
+                                    <!-- ASSEMBLY AND PACKAGE --><a id="MDPoorTag" class='trojan-tag'> MD7: Poor/
+                                        Inconsistent Die Attach </a> </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class='middle-group-two'>
+                    <div class='bar-divide-two'></div>
+                    <!-- HARDWARE TROJANS --><a id="EnvironmentalTag" class='middle-first trojan-category'>
+                        Environmental </a>
+                    <!--                            <a id="BenchmarkTag" class='middle-second trojan-category'> Defects </a>-->
+                    <div class='bar-divide-two-bel'></div>
+                    <div class="bottom">
+                        <div class='trojan-group tg'>
+                            <div class='bar-divide-tl5'></div>
+                            <!-- LOCATION --><a id="EnvLeadTag" class='trojan-category'> Lead/Balls/ Column </a>
+                            <ul class='sub-tree tl5'>
+                                <li class='arrow'>
+                                    <!-- SPECIFICATION --><a id="ELContaminateTag" class='trojan-tag'> NL1:
+                                        Contamination </a> </li>
+                                <li class='arrow'>
+                                    <!-- DESIGN --><a id="ELOxidateTag" class='trojan-tag'> NL2: Oxidation/ Corrosion
+                                    </a> </li>
+                            </ul>
+                        </div>
+                        <div class='trojan-group tg'>
+                            <div class='bar-divide-tl6'></div>
+                            <!-- PHSICAL CHARACTERISTIC --><a id="EnvPackageTag" class='trojan-category'> Package </a>
+                            <ul class='sub-tree tl6'>
+                                <li class='arrow'>
+                                    <!-- SPECIFICATION --><a id="EPAbnormalTag" class='trojan-tag'> NP1: Abnormal
+                                        Package Conditions </a> </li>
+                                <li class='arrow'>
+                                    <!-- DESIGN --><a id="EPContaminateTag" class='trojan-tag'> NP2: Contamination </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--    PopUp Messages-->
+    <div class="popup" id='Defect' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">Defects</h3><br>
+            <p> Counterfeit defects are those anomalies and changes that are not typically found in authentic parts. A
+                counterfeit part may often contain one or more different anomalies and deviations from normal/usual
+                form and/or functionality of a genuine component. These anomalies may be physicalor electrical.</p> <a
+                class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='Mechanical' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">Mechanical</h3><br>
+            <p> Mechanical defects are directly related to a component’s physical properties. Mechanical defects are
+                categorized into four types - leads/balls/columns, package, bond wires and die - depending on the
+                location of the defects.</p> <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MechLead' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">Lead/Balls/Column</h3><br>
+            <p>Leads, Balls or Columns on an IC can show how the part has been handled if it was previously used.
+                Physically, leads should adhere to datasheet specifications such as, straightness, pitch, and
+                separation. The leads’ final coating should be consistent throughout the entire lot as well. Leads
+                should also have a consistent elemental construction. </p> <a class="popup-close" data-popup-close="popup-1"
+                href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MLDents' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">ML1: Dents/ Damaged/ Bent</h3><br>
+            <p> Dents are unexpected impressions made in the surfaces of leads, balls, or columns by improper handling.
+                This category includes all lead damage issues such as scratches, bent leads, broken leads, and missing
+                leads. </p> <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MLReworked' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center"> ML2: Reworked</h3><br>
+            <p>The reworking of leads defines this category of defects. Replating of leads using tin also belongs to
+                this category. Reworking may be performed on a recycled or remarked chip. </p> <a class="popup-close"
+                data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MLDime' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">ML3: Incorrect Dimensions</h3><br>
+            <p>Physically, leads, balls, and columns should adhere to datasheet specifications, including straightness,
+                pitch, separation, etc. Any mismatch in these specifications would lead to this type of defect.
+                Counterfeit chips that belong to recycled, remarked, cloned, or overproduced types may have incorrect
+                dimensions if the counterfeiters do not adhere to the datasheet specifications. </p> <a class="popup-close"
+                data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MLMaterials' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">ML4: Wrong Materials</h3><br>
+            <p> Whenever the chemical composition of leads, balls, and columns differs from the specification sheet,
+                the case would be placed in this category of defect. The hazardous element lead (Pb) is not supposed to
+                be present on the leads of an IC.</p> <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MLColor' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">ML5: Color Variations</h3><br>
+            <p>If the leads’ color differs from the datasheet specifications (or from authentic parts), then this could
+                signal that the lead has been reworked. If the leads appear to have a darker or duller finish, it could
+                be a sign that they have been soldered or removed from a previously used printed circuit board (PCB).
+            </p> <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MLTooling' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center"> ML6: Tooling Marks</h3><br>
+            <p> Missing tool marks on the lead may indicate the presence of a used component, as replating often covers
+                tool marks during recycling. Insertion marks on leads may suggest that the part was previously
+                installed elsewhere. The leads of an authentic part may contain tooling marks. The presence or absence
+                of these marks could be an indicator of counterfeiting. </p> <a class="popup-close" data-popup-close="popup-1"
+                href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MLMisalign' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center"> ML7: Misaligned/ missing Balls/ Columns</h3><br>
+            <p>Array packaging technology has become popular among the semiconductor industry today as they provide a
+                huge increase in input/outputs (I/O) pin density for large integrated circuits. Ball grid array (BGA)
+                and column grid array (CGA) are two popular surface-mount packaging techniques used for ICs. These
+                arrays provide not only higher interconnect densities, but also solve the problems associated with
+                leads. </p> <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MLDistort' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">ML8: Distorted/ Non-Uniform Balls/ Columns</h3><br>
+            <p> Non-uniform or distorted balls and columns may indicate that the part is counterfeit. Solder balls
+                should not show signs of reworking. </p> <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MLLead' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">ML9: Lead Reattachment</h3><br>
+            <p>Lead re-attachment is the process by which the original leads or ball grid array (BGA) are removed and
+                replaced with new or different leads/BGA to make a part lead-free. It also involves the reattachment of
+                a lead that was damaged or broken during recycling process. Some possible indicators of this kind of
+                counterfeiting would be evidence of visible oxidation; differences in leads, balls and columns’ size
+                and texture; and leads, balls and columns not passing solderability testing. </p> <a class="popup-close"
+                data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MechPackage' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">Package</h3><br>
+            <p>The package of an IC provides significant information regarding its authenticity. For example, country
+                of origin, date and lot codes, device manufacturers’ identification, etc are marked on the package. If
+                the package exhibits any sanding or grinding marks externally, it has likely been recycled or remarked
+            </p> <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MPSand' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MP1: Sanding/ Gringing Marks</h3><br>
+            <p>If the package exhibits any sanding or grinding marks externally, it has likely been remarked.
+                Generally, counterfeiters use sand blasting processes to remove markings from the package. This process
+                generally results in a distinct visual signature being present on the package. </p> <a class="popup-close"
+                data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MPMark' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MP2: Markings</h3><br>
+            <p>Markings should be consistent and conform to the authentic parts. Marking defects occur when there is a
+                mismatch between the marking of a part under authentication and the authentic part. The markings on the
+                package should be permanent and clean with no indications of remarking. </p> <a class="popup-close"
+                data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MPBurn' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MP3: Burned Markings</h3><br>
+            <p>Laser machining is one of the most popular technologies for package markings. The imprecise exposure of
+                the laser beam may cause burn marks on the package during the remarking process </p> <a class="popup-close"
+                data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MPGhost' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MP4: Ghost Markings </h3><br>
+            <p>Ghost marking occurs when the counterfeiters do not entirely remove the original marking before printing
+                the new one. The part markings are faintly visible and appear behind the new markings on the parts. The
+                original part markings can be seen either under low-power magnification or after marking permanency
+                testing. </p> <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MPColor' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MP5: Color Variations/ Fade </h3><br>
+            <p>If the package color is faded, it would be a clear indication of part counterfeiting. </p> <a class="popup-close"
+                data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MPTexture' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MP6: Improper Textures</h3><br>
+            <p> The mismatch of textures between top, side, and bottom surfaces of a package belongs to this category.
+                Black topping is performed to hide the sanding or grinding marks on the top surface. If a part is
+                blacktopped, then there will be a clear texture difference between the top and the side, as well as the
+                top and bottom surfaces.</p> <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MPExtraneous' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MP7: Extraneous Markings</h3><br>
+            <p>Surface scratches and unexpected ink dots are examples of this type of defects. This includes scratch
+                marks under solder balls and columns on CGA/BGA parts </p> <a class="popup-close" data-popup-close="popup-1"
+                href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MPDirty' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MP8: Dirty Cavities</h3><br>
+            <p>This category of defects consists of cavities in hermetically sealed components that are not clean and
+                have extra materials in them. Cavities such as hermetic cavity, are commonly integrated into an IC
+                component to offer protection against mechanical and handling stress, especially for components with
+                fragile surface features. </p> <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MPDime' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MP9: Incorrect Dimensions/ Weight</h3><br>
+            <p>Package dimensions should be consistent with and conform to the part data sheet. Due to resurfacing and
+                blacktop coating, the weight of the part may vary. </p> <a class="popup-close" data-popup-close="popup-1"
+                href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MPFine' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MP10: Fine/ Gross Leak (Hermatic)</h3><br>
+            <p>The seal on hermetic parts is a crucial component that ensures a part’s proper functioning within the
+                environment for which it was designed. The seal of a hermetic part can be broken by excessive force or
+                heat, both of which are typical of a crude recycling process. </p> <a class="popup-close"
+                data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MPMold' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MP11: Package Mold Variations</h3><br>
+            <p>Molding compounds are generally composite materials consisting of epoxy resins, phenolic hardeners,
+                silica, catalysts, pigments, mold release agents, etc. Variations from the data sheet (authentic or
+                genuine part) can confirm a part as counterfeit. Defects involving different package mold shapes within
+                the same lot also belong to this category. Recycled, remarked, overproduced, and cloned counterfeit
+                types could potentially have this defect. </p> <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MPDamage' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MP12: Package Damage</h3><br>
+            <p>If the package exhibits damages such as cracks or chipout, then it would fall within this category of
+                defect. </p> <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MPResurface' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MP13: Resurfacing/ blacktopping</h3><br>
+            <p>If the package has a secondary coating applied to one or more sides of the package, then it has probably
+                been resurfaced or blacktopped. The coating is intended to obscure the original package features and
+                provide visual consistency to the lot. </p> <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MPMarker' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MP14: Pin 1 marker filled/ missing</h3><br>
+            <p>Pin 1 marker shows the location of the pin 1 of a component. Pin 1 marker or mold markers (dimples) on a
+                package may: (i) have a production number or letter, (ii) be missing, (iii) be filled by
+                “black-topping”, or (iv) not be shiny. </p> <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MechBond' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">Bond Wires</h3><br>
+            <p>An integrated circuit contains a die, bond wires, and a structure that is used to hold them all in
+                place. These internal pieces could potentially provide significant information regarding a component’s
+                authenticity. It is important to observe the shape, size and count of the bond wires. It is common for
+                some circuits to bi-wire the power and ground connections for better current carrying capability. The
+                absence of any of these bond wires, or broken bond wires will definitely cause a failure of a component
+                in the field. </p> <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MBMissing' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MB1: Missing Wires </h3><br>
+            <p>The inside of an integrated circuit (IC) contains a die and bond wires. If some of the bond wires are
+                missing, the circuit will fail during functional operation. Usually, multiple bond wires are used for a
+                single connection to support the current delivered to the die. The component will work as specified,
+                but, it may fail under extreme conditions. This might be an indication of a recycled component, where
+                the die is completely repackaged or a cloned component, where the counterfeiter use single wire bond.
+            </p> <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MBConnect' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MB2: Poor Connection</h3><br>
+            <p>A defect occurs when the connection between the die and leads, balls or columns of a component is poor.
+                This is a type of latent defect, where the part may work normally for a while before the user
+                experiences degradation in performance. If under enough environmental stress or if exposed to a large
+                shock, the wire itself may completely burn out. This defect may occur in recycled components where the
+                connections are degraded due to the prior usage. This may also be visible in out-of-spec/defective
+                components. Cloned components may also possess this defect when the counterfeiter uses inferior
+                materials for cloning. </p> <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MBBroken' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MB3: Broken Wires </h3><br>
+            <p>Components that have gone through the recycling process may have been mishandled to the extent that the
+                connection from the bond wire to the die is broken. This defect may also occur in out-of-spec/defective
+                components when it is escaped from assembly after packaging process. </p> <a class="popup-close"
+                data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MBDress' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MB4: Poor Inconsistent Lead Dress/ Lead Frame</h3><br>
+            <p>The presence of inconsistent lead dress serves as a clear indication that a part is counterfeit. The
+                presence of two different types of lead frame structures for chips that are supposed to belong to the
+                same lot is also a good indicator of parts being counterfeit. </p> <a class="popup-close"
+                data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MBRework' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MB5: Reworked Wire Bonds </h3><br>
+            <p>The die is lifted from the package during die recovery and then re-packaged to a new component. The
+                counterfeiters re-ball the bond wire terminations leaving double ball bonds. </p> <a class="popup-close"
+                data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MBPull' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MB6: Bond Pull Strength</h3><br>
+            <p>The strength of the bond wire interconnection system, including the strength of the bond wire and the
+                strength of the bond wire interconnection to the pad, can help gauge whether or not counterfeiting has
+                taken place. This defect can occur in a counterfeit part having improper bond wires or an intermetallic
+                growth formation at the connection pad, which causes a poor connection. In the worst case, the bond
+                wires may be detached from the die. </p> <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MechDie' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">Die</h3><br>
+            <p>Die is a semiconducting material on which an electronic circuit is fabricated. It is extremely important
+                to inspect the die very carefully. In one shocking case, a component was shipped with no die inside the
+                package [8]. Admittedly, this scenario does not happen often. A more possible scenario is the
+                likelihood of a component having a different die than the one indicated by the markings on the package.
+                This could be the case if the package has been remarked or if a different die was transplanted into a
+                new package. </p> <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MDMissing' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MD1: Missing Die</h3><br>
+            <p> This defect occurs when the die is missing inside the package.</p> <a class="popup-close"
+                data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MDWrong' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MD2: Wrong Die</h3><br>
+            <p>In this case, the die is different from what it is expected to be. Different die orientations existing
+                within a single lot would also come under this category. </p> <a class="popup-close" data-popup-close="popup-1"
+                href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MDDelaminate' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center"> MD3: Delamination</h3><br>
+            <p>Due to imperfections in fabrication, a die may contain trace amounts of air between its layers. When
+                heated, these pockets will expand. If there is enough air present, the die pocket will expand to the
+                point of delaminating, a process by which adjacent, connected layers of the die separate causing the
+                circuit to open in that area. This is known as “popcorning” due to the resemblance. </p> <a class="popup-close"
+                data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MDCracks' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center"> MD4: Gross Cracks</h3><br>
+            <p>A component that has gone through a crude recycling process is subjected to extreme changes in
+                temperature and harsh environments that it was not designed to withstand. If gross cracks exist in the
+                die, then the defects come under this category. </p> <a class="popup-close" data-popup-close="popup-1"
+                href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MDImproper' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MD5: Improper Die Markings </h3><br>
+            <p>There are markings on the die that can help in proving authenticity when compared to the package
+                markings. When the marking on the die does not match the marking on the package, there may be a high
+                possibility of that part being counterfeit. However, the part may be still be authentic if the OCM uses
+                different markings for the die and the package. </p> <a class="popup-close" data-popup-close="popup-1"
+                href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MDDamage' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MD6: Die Damage/ Extraneous Markings </h3><br>
+            <p>The die may be damaged during the recycling process. Extraneous marks, such as scratches, may also be
+                present. </p> <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='MDPoor' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">MD7: Poor/ Inconsistent Die Attach </h3><br>
+            <p>Excessive voids in die attachment or inconsistent die attachment could be a sign of reworked or cloned
+                products. </p> <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='Environmental' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">Environmental</h3><br>
+            <p>Environmental defects are caused when the environmental parameters interact with the outer structure of
+                a component. Oxidation and corrosion on leads are caused when a part is kept for a long time without
+                proper protection. In addition, during the recycling process, the leads can easily get oxidized at
+                higher temperatures and contaminated by other materials. </p> <a class="popup-close" data-popup-close="popup-1"
+                href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='EnvLead' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">Lead/Balls/ Column</h3><br>
+            <p>Leads, Balls or Columns on an IC can show how the part has been handled if it was previously used.
+                Physically, leads should adhere to datasheet specifications such as, straightness, pitch, and
+                separation. The leads’ final coating should be consistent throughout the entire lot as well. Leads
+                should also have a consistent elemental construction. </p> <a class="popup-close" data-popup-close="popup-1"
+                href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='ELContaminate' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">NL1: Contamination</h3><br>
+            <p>Leads, balls, or columns are contaminated by hazardous substances. If there is contamination, then the
+                plating may be correct, but it may have organics over it. </p> <a class="popup-close" data-popup-close="popup-1"
+                href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='ELOxidate' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">NL2: Oxidation/ Corrosion</h3><br>
+            <p>There may be oxidation, or corrosion on the lead due to the harsh recycling process. Whiskers could
+                indicate abnormal storage or lead frame material. </p> <a class="popup-close" data-popup-close="popup-1"
+                href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='EnvPackage' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">Package</h3><br>
+            <p> The package of an IC provides significant information regarding its authenticity. For example, country
+                of origin, date and lot codes, device manufacturers’ identification, etc are marked on the package. If
+                the package exhibits any sanding or grinding marks externally, it has likely been recycled or remarked.
+            </p> <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='EPAbnormal' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">NP1: Abnormal Package Conditions</h3><br>
+            <p> Abnormal package conditions could include such items as presence of corrosion which can cause
+                significant damage to a package during the harsh recycling process.</p> <a class="popup-close"
+                data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+    <div class="popup" id='EPContaminate' data-popup="popup-1">
+        <div class="popup-inner">
+            <h3 class="text-center">NP2: Contamination</h3><br>
+            <p>The package of a component is made of epoxy-molding compound, ceramic, metal, or engineering
+                thermoplastic materials. When component are kept in open air it may contaminated. It may also be
+                contaminated during the recycling process. </p> <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        //----- OPEN
+        $('#DefectTag').on('click', function (e) {
+            $('#Defect').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MechanicalTag').on('click', function (e) {
+            $('#Mechanical').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MechLeadTag').on('click', function (e) {
+            $('#MechLead').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MLDentsTag').on('click', function (e) {
+            $('#MLDents').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MLReworkedTag').on('click', function (e) {
+            $('#MLReworked').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MLDimeTag').on('click', function (e) {
+            $('#MLDime').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MLMaterialsTag').on('click', function (e) {
+            $('#MLMaterials').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MLColorTag').on('click', function (e) {
+            $('#MLColor').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MLToolingTag').on('click', function (e) {
+            $('#MLTooling').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MLMisalignTag').on('click', function (e) {
+            $('#MLMisalign').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MLDistortTag').on('click', function (e) {
+            $('#MLDistort').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MLLeadTag').on('click', function (e) {
+            $('#MLLead').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MechPackageTag').on('click', function (e) {
+            $('#MechPackage').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MPSandTag').on('click', function (e) {
+            $('#MPSand').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MPMarkTag').on('click', function (e) {
+            $('#MPMark').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MPBurnTag').on('click', function (e) {
+            $('#MPBurn').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MPGhostTag').on('click', function (e) {
+            $('#MPGhost').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MPColorTag').on('click', function (e) {
+            $('#MPColor').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MPTextureTag').on('click', function (e) {
+            $('#MPTexture').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MPExtraneousTag').on('click', function (e) {
+            $('#MPExtraneous').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MPDirtyTag').on('click', function (e) {
+            $('#MPDirty').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MPDimeTag').on('click', function (e) {
+            $('#MPDime').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MPFineTag').on('click', function (e) {
+            $('#MPFine').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MPMoldTag').on('click', function (e) {
+            $('#MPMold').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MPDamageTag').on('click', function (e) {
+            $('#MPDamage').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MPResurfaceTag').on('click', function (e) {
+            $('#MPResurface').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MPMarkerTag').on('click', function (e) {
+            $('#MPMarker').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MechBondTag').on('click', function (e) {
+            $('#MechBond').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MBMissingTag').on('click', function (e) {
+            $('#MBMissing').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MBConnectTag').on('click', function (e) {
+            $('#MBConnect').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MBBrokenTag').on('click', function (e) {
+            $('#MBBroken').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MBDressTag').on('click', function (e) {
+            $('#MBDress').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MBReworkTag').on('click', function (e) {
+            $('#MBRework').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MBPullTag').on('click', function (e) {
+            $('#MBPull').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MechDieTag').on('click', function (e) {
+            $('#MechDie').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MDMissingTag').on('click', function (e) {
+            $('#MDMissing').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MDWrongTag').on('click', function (e) {
+            $('#MDWrong').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MDDelaminateTag').on('click', function (e) {
+            $('#MDDelaminate').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MDCracksTag').on('click', function (e) {
+            $('#MDCracks').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MDImproperTag').on('click', function (e) {
+            $('#MDImproper').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MDDamageTag').on('click', function (e) {
+            $('#MDDamage').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#MDPoorTag').on('click', function (e) {
+            $('#MDPoor').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#EnvironmentalTag').on('click', function (e) {
+            $('#Environmental').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#EnvLeadTag').on('click', function (e) {
+            $('#EnvLead').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#ELContaminateTag').on('click', function (e) {
+            $('#ELContaminate').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#ELOxidateTag').on('click', function (e) {
+            $('#ELOxidate').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#EnvPackageTag').on('click', function (e) {
+            $('#EnvPackage').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#EPAbnormalTag').on('click', function (e) {
+            $('#EPAbnormal').fadeIn(350);
+            e.preventDefault();
+        });
+        $('#EPContaminateTag').on('click', function (e) {
+            $('#EPContaminate').fadeIn(350);
+            e.preventDefault();
+        });
+        //----- CLOSE
+        $('[data-popup-close]').on('click', function (e) {
+            var targeted_popup_class = jQuery(this).attr('data-popup-close');
+            $('[data-popup="' + targeted_popup_class + '"]').fadeOut(350);
+            e.preventDefault();
+        });
+    });
+</script>
+
+
+{% endblock %}

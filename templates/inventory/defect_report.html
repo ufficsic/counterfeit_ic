@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Couinterfeit-IC{% endblock %}
+{% block head %} {{ super() }}{% endblock %}
+{% block content %}
+
+<div class="container grey_block">
+
+    {% include "_flashmessages.html" %}
+
+    <div class="container">
+        <h2 class="body_heading">Defect Report for {{ defect_type.name }} </h2>
+
+        <table class="formal text-center">
+            <tr>
+                <td>Defect Taxonomy</td>
+            </tr>
+            <tr>
+                <td>Primary Classificiation</td>
+                <td>
+                    {{ defect_type.primary_type }}
+                </td>
+
+            </tr>
+            <tr>
+                <td>Secondary Classificiation</td>
+                <td>
+                    {{ defect_type.secondary_type }}
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="container">
+        <h5>Products with defect type {{ defect_type.name }} </h2>
+            <table class="table formal text-center">
+                <thead>
+                    <tr>
+                        <th>
+                            <div>Product Name</div>
+                        </th>
+                        <th>
+                            <div>Manufacturer </div>
+                        </th>
+                        <th>
+                            <div>Number of Occurrences</div>
+                        </th>
+                        <th>
+                            <div>Frequency</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>
+                            <div>
+                                <a href="{{ url_for('product_report', product_id=product.Product.id) }}">{{
+                                    product.Product.name }}</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                {{ product.manufacturer }}</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                {{ product.occurences }}
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <p>frequency</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+    </div>
+
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,364 @@
+.taxo{
+    height: 1050px
+}
+.trojan-outter {
+	width: 100%;
+}
+.trojan-inner {
+	width: 1500px;
+	margin:auto;
+}
+
+.top {
+	border-bottom: 1px solid #000000;
+	width: 800px;
+	height: 60px;
+    margin-left: 90px;
+	margin-bottom: 15px;
+
+}
+
+.root {
+    position: relative;
+	left: 420px;
+	top: 20px;
+}
+
+.middle-group-one{
+    border-bottom: 1px solid #000000;
+    float: left;
+	width: 630px;
+	height: 50px;
+	margin-bottom: 15px;
+}
+
+.middle-group-two{
+    margin-left: 50px;
+    border-bottom: 1px solid #000000;
+    float: left;
+	width: 340px;
+	height: 50px;
+	margin-bottom: 15px;
+}
+
+.bottom{
+	height: 350px;
+	border:none;
+	position: relative;
+	top:60px;
+}
+.bar-divide{
+	border-right: 1px solid #000000;
+	height: 13px;
+	width: 455px;
+	position: relative;
+	top: 22px;
+}
+
+.bar-divide-one{
+    border-right: 1px solid #000000;
+    height: 20px;
+    width: 135px;
+    margin-top: -15px;
+    margin-bottom: -15px;
+    /* position: relative; */
+    /* top: -50px; */
+    /* float: left; */
+
+}
+
+.bar-divide-two{
+    border-right: 1px solid #000000;
+    height: 20px;
+    width: 135px;
+    margin-top: -15px;
+    margin-bottom: -15px;
+    /* position: relative; */
+    /* top: -50px; */
+    /* float: left; */
+}
+
+.bar-divide-one-bel{
+    border-right: 1px solid #000000;
+    height: 20px;
+    width: 135px;
+    margin-top: 15px;
+    margin-bottom: -15px;
+    /* position: relative; */
+    /* top: -50px; */
+    /* float: left; */
+
+}
+.bar-divide-two-bel{
+    border-right: 1px solid #000000;
+    height: 20px;
+    width: 135px;
+    margin-top: 15px;
+    margin-bottom: -15px;
+    /* position: relative; */
+    /* top: -50px; */
+    /* float: left; */
+}
+
+.bar-divide-tl1{
+    border-right: 1px solid #000000;
+    height: 20px;
+    width: 135px;
+    margin-top: -45px;
+    margin-left: -60px;
+    /* margin-bottom: 5px; */
+    /* position: relative; */
+    /* top: -50px; */
+    /* float: left; */
+
+}
+
+.bar-divide-tl2{
+    border-right: 1px solid #000000;
+    height: 20px;
+    width: 135px;
+    margin-top: -45px;
+    margin-left: -95px;
+    /* margin-bottom: 5px; */
+    /* position: relative; */
+    /* top: -50px; */
+    /* float: left; */
+
+}
+
+.bar-divide-tl3{
+    border-right: 1px solid #000000;
+    height: 20px;
+    width: 135px;
+    margin-top: -45px;
+    margin-left: -85px;
+    /* margin-bottom: 5px; */
+    /* position: relative; */
+    /* top: -50px; */
+    /* float: left; */
+
+}
+
+.bar-divide-tl4{
+    border-right: 1px solid #000000;
+    height: 20px;
+    width: 135px;
+    margin-top: -45px;
+    margin-left: -115px;
+    /* margin-bottom: 5px; */
+    /* position: relative; */
+    /* top: -50px; */
+    /* float: left; */
+
+}
+
+.bar-divide-tl5{
+    border-right: 1px solid #000000;
+    height: 20px;
+    width: 135px;
+    margin-top: -45px;
+    margin-left: -60px;
+    /* margin-bottom: 5px; */
+    /* position: relative; */
+    /* top: -50px; */
+    /* float: left; */
+
+}
+
+.bar-divide-tl6{
+    border-right: 1px solid #000000;
+    height: 20px;
+    width: 135px;
+    margin-top: -45px;
+    margin-left: -95px;
+    /* margin-bottom: 5px; */
+    /* position: relative; */
+    /* top: -50px; */
+    /* float: left; */
+
+}
+
+
+.middle-first{
+    position: relative;
+	left: 85px;
+	top: 15px;
+}
+
+.middle-second{
+    position: relative;
+	left: 600px;
+	top: 15px;
+}
+/* p.subroot {
+	margin:0;
+	padding:0;
+} */
+ul.sub-tree {
+	font-size: 12px;
+	list-style: none;
+	padding:0;
+	margin:0;
+    margin-left: 10px;
+    margin-right: 10px;
+	position:relative;
+	top:2px;
+	border-left: 1px solid #000;
+}
+
+li.arrow {
+	padding: 0;
+    margin: 0;
+    background: #ffffff
+        url("/static/images/site_images/arrow.png") 
+        no-repeat;
+	position:relative;
+	top:20px;
+	
+}
+
+
+.trojan-tag:hover, .trojan-category:hover {
+	background-color:#fff6d3;
+	border: 1px solid green;
+	color: green;
+	text-decoration:none;
+       cursor:pointer;
+	
+}
+.trojan-tag {
+	border: 1px solid #999;
+    background-color: #ffffff;
+	color: green;
+	margin-left:30px;
+	margin-bottom:10px;
+	position:relative;
+	top:-10px;
+	padding:2px;
+	display:inline-block;
+	text-align: center;
+	box-shadow: 1px 1px 3px #bbb;
+	-moz-box-shadow:  1px 1px 3px #bbb;
+	-webkit-box-shadow:  1px 1px 3px #bbb;
+	white-space: normal;
+}
+.trojan-category {
+	padding: 5px 10px;
+	background-color: #ffffff;
+	color:#006600;
+	border: 1px solid #999;
+	margin:0px;
+	color: 006000;
+	box-shadow: 1px 1px 3px #bbb;
+	-moz-box-shadow:  1px 1px 3px #bbb;
+	-webkit-box-shadow:  1px 1px 3px #bbb;
+	white-space: normal;
+}
+.trojan-group {
+    margin-right: 3px;
+	display:inline-block;
+	vertical-align: top;
+}
+.smaller-tag {
+	font-size: 10px;
+}
+
+.tg{
+    width: 150px
+}
+/*
+ * Insertion Phase
+ */
+.tl1 {
+	height: 462px;
+}
+/*
+ * Abstraction level
+ */
+.tl2 {
+	height:740px;
+}
+/*
+ * Activation Mechanism
+ */
+.tl3 {
+	height: 324px;
+}
+
+/*
+ * Effect 
+ */
+.tl4 {
+	height: 358px;
+}
+/*
+ * Location
+ */
+
+.tl5 {
+	height: 80px;
+}
+/*
+ * Physical Characteristic
+ */
+.tl6 {
+	height: 98px;
+}
+
+
+
+
+/*PopUP Styles*/
+
+        .popup {
+            width: 100%;
+            height: 100%;
+            display: none;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            background: rgba(0, 0, 0, 0.75);
+        }
+        /* Inner */
+        
+        .popup-inner {
+            max-width: 700px;
+            width: 90%;
+            padding: 40px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 1);
+            border-radius: 3px;
+            background: #fff;
+        }
+        /* Close Button */
+        
+        .popup-close {
+            width: 30px;
+            height: 30px;
+            padding-top: 4px;
+            display: inline-block;
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            transition: ease 0.25s all;
+            -webkit-transform: translate(50%, -50%);
+            transform: translate(50%, -50%);
+            border-radius: 1000px;
+            background: rgba(0, 0, 0, 0.8);
+            font-family: Arial, Sans-Serif;
+            font-size: 20px;
+            text-align: center;
+            line-height: 100%;
+            color: #fff;
+        }
+        
+        .popup-close:hover {
+            -webkit-transform: translate(50%, -50%) rotate(180deg);
+            transform: translate(50%, -50%) rotate(180deg);
+            background: rgba(0, 0, 0, 1);
+            text-decoration: none;
+        }

@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}Couinterfeit-IC{% endblock %}
+{% block head %} {{ super() }}
+<script src={{ url_for('static', filename='static/upload.js') }}></script>
+
+{% endblock %}
+{% block content %}
+
+<div class="container grey_block">
+    <h3>Dataset Upload instructions</h3>
+    <ol>
+        <li>Maximum file upload size is 100MB</li>
+        <li>If you have a dataset with total size bigger than 10MB download the Dataset Zip Builder Python script</li>
+        <li>The Python script creates smaller zip files of 100MB</li>
+        <li>Run Command on Terminal: python pyzip_dataset_builder.py folder_path</li>
+    </ol>
+    <a class="btn btn-primary" href="{{ url_for('static', filename='py_scripts/pyzip_dataset_builder.py') }}" download>
+        Download Dataset Zip Builder
+    </a>
+</div>
+
+<div class="container grey_block">
+    <form id="upload-Form" method="POST" action="{{ url_for('dataset')}}" role="form" enctype="multipart/form-data">
+        {% include "_flashmessages.html" %}
+        {% from "_formhelpers.html" import render_field %}
+        <div class="form-group">
+            {{form.hidden_tag()}}
+            <h3 class="text-center">{{ form.archive.label }}</h3>
+            {{ render_field(form.name, class='form-control') }}
+            {{ render_field(form.description, class='form-control') }}
+            {{ form.archive(multiple="multiple") }}
+            {{ form.submit }}
+        </div>
+    </form>
+
+
+    <div class="progress">
+        <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0"
+            aria-valuemin="0" aria-valuemax="100">0%</div>
+    </div>
+
+
+</div>
+
+
+{% if files %}
+<div class="container grey_block">
+    <h3 class="text-center">View all datasets</h3>
+
+    <form name="delete-Form" id="delete-Form" action="{{ url_for('delete_dataset')}}" method="post">
+        <table class="table formal text-center">
+            <thead>
+                <tr>
+                    <th>
+                        <div>File</div>
+                    </th>
+                    <th>
+                        <div>Description</div>
+                    </th>
+                    <th>
+                        <div>Delete</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for archive in files %}
+                <tr>
+                    <td>
+                        <div><a class="" href="{{ archives.url(archive.filename) }}" download>
+                                {{ archive.name }}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <p>{{ archive.description }}</p>
+                        </div>
+                    </td>
+                    <td>
+                        {% if user.is_admin or user.id == archive.user %}
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" name="archive_id" type="checkbox" value="{{ archive.id }}">
+                            </label>
+                        </div>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="submit" id="deletebutton" class="btn has-danger center-block">Submit</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+{% endif %}
+
+
+{% endblock %}

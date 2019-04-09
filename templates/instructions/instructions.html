@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Couinterfeit-IC{% endblock %}
+{% block head %} {{ super() }}{% endblock %}
+{% block content %}
+
+<div class="container grey_block">
+    <h3>Upload instructions</h3>
+    <p>Login or Sign up to create an account.</p>
+    <p>After login, to upload using an Excel File, first download the form below. Each row of the form represents one defect of one component of the sample. For each row: </p>
+
+    <ol>
+        <li>Enter the sample ID number of the component</li>
+        <li>Select the desired defect</li>
+        <li>If applicable, create a hyperlink to the corresponding image of the defect.</li>
+    </ol>
+    <p>
+        Do not skip rows when entering data. When finished, create a zip archive containing the images, and the Excel file, taking
+        care to preserve the file system structure between the images and the Excel file.
+        <br> Maximum file Upload is 100MB.</p>
+
+    <p>Admin privilages required to make changes and edit the contents. Request admin privilages by contacting the Administrator.</p>
+    <p>
+        <a href="#" style="color: blue;">See example here</a>
+    </p>
+    <a class="btn btn-primary" href="{{ url_for('static', filename='files/sampleSubmitForm.xlsx') }}" download>Download Excel Form</a>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Couinterfeit-IC{% endblock %}
+{% block head %} {{ super() }}{% endblock %}
+{% block content %}
+
+<div class="container grey_block">
+
+    <style>
+        #invisible {
+            visibility: hidden;
+        }
+    </style>
+
+    {% include "_flashmessages.html" %}
+
+    <h2 class="body_heading"> Defects List </h2>
+
+    {% if id_list %}
+    <form action="{{url_for('download_images')}}" method="post" enctype="multipart/form-data">
+        <div id="invisible" class="form-group">
+            <select class="" name="manufacturer" id="manufacturer">
+                <option value={{ id_list.m_id }}></option>
+            </select>
+            <select class="" name="product" id="product">
+                <option value={{ id_list.p_id }}></option>
+            </select>
+            <select class="" name="defect_type" id="defect_type">
+                <option value={{ id_list.d_id }}></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Download Images</button>
+    </form>
+    {% endif %}
+
+    <table class="table formal text-center">
+        <thead>
+            <tr>
+                <th>
+                    <div>Manufacturer</div>
+                </th>
+                <th>
+                    <div>Product</div>
+                </th>
+                <th>
+                    <div>Defect Type</div>
+                </th>
+                <th>
+                    <div>Defect Type Primary Class</div>
+                </th>
+                <th>
+                    <div>Defect Type Secondary Class</div>
+                </th>
+                <th>
+                    <div>Defect Image</div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for defect in defects_list %}
+            <tr>
+                <td>
+                    <div>
+                        {{ defect.m_name }}</a>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <a href="{{ url_for('product_report', product_id=defect.p_id) }}">
+                            {{ defect.p_name }}</a>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <a href="{{ url_for('defect_report', defect_id=defect.d_id) }}">
+                            {{ defect.d_name }}</a>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        {{ defect.d_primary }}
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        {{ defect.d_secondary }}
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <a class="" href="{{ url_for('static', filename=defect_image_folder + '/' + defect.d_image ) }}">view</a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}

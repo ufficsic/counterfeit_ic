@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Couinterfeit-IC{% endblock %}
+{% block head %} {{ super() }}{% endblock %}
+{% block content %}
+
+
+<div class="container grey_block">
+    <h2 class="body_heading">Select a Defect to Generate Report</h2>
+
+    {% include "_flashmessages.html" %}
+
+    <form action="{{url_for('defect_report')}}" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="manufacturerSelect">Manufacturer</label>
+            <select class="form-control" name="manufacturer" id="manufacturer">
+                <option value="-1">All Manufacturers</option>
+                {% for manufacturer in manufacturers %}
+                <option value={{ manufacturer.id }}>{{ manufacturer.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="ProductSelect">Product</label>
+            <select class="form-control" name="product" id="product">
+                <option value="-1" selected>All Products</option>
+                {% for product in products %}
+                <option value={{ product.id }}>{{ product.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="manufacturerSelect">Defect</label>
+            <select class="form-control" name="defect_type" id="defect_type">
+                <option value="-1">Select a Defect</option>
+                {% for defect_type in defect_types %}
+                <option value={{ defect_type.id }}>{{ defect_type.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+
+<script src="{{ url_for('static', filename='js/inventory/select_defect.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,71 @@
+.body_class {
+    background-image: url("/static/images/site_images/cfic_bg.jpg");
+    background-color: #2C3E50;
+}
+
+.footer_padding {
+    margin-top: 25%;
+}
+
+.footer {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+    background-color: #2C3E50;
+    color: #fff;
+}
+
+.copyright {
+    background-color: #1a252f;
+}
+  
+
+#foot_logo{
+    margin-top: 10px;
+    height: 100px;
+}
+
+
+
+.grey_block {
+	background-color: white;
+    border-radius: 12px;
+    padding: 2em 4em;
+    margin-top: 3em;
+    min-height: 300px;
+    margin-bottom: 3em;
+}
+
+
+header {
+	font-family: Arial,'Merriweather Sans', sans-serif;
+}
+
+#bannerContainer {
+	background-color: #ffffff;			/* White background as fallback */
+    background: linear-gradient(to bottom, white, 90%, #6C9AC3); /* Standard syntax */
+    margin-top: -10px;
+    padding-top: 10px;
+	border-style: solid;
+	border-color: #fff;
+	border-width: 0.2em;
+	border-top-style: none;
+	border-right-style: none;
+	border-left-style: none;
+	width: 100%;
+}
+
+#logoContainer {
+	color: #005496;
+    margin: 0.5em auto;
+    padding-left: 10%;
+	max-width: 100%;
+}
+
+#floridaLogo {
+	width: 15em;
+}
+
+.maxbar {
+	width: 100% !important;
+}
+

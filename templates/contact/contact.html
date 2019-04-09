@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Couinterfeit-IC{% endblock %}
+{% block head %} {{ super() }}
+<link href="{{ url_for('static', filename='css/contact.css') }}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+
+
+<div class="container grey_block">
+	<div class="row section">
+		<div class="col-md-3">
+			<img src="{{url_for('static', filename='images/site_images/NA.jpg')}}" class="img-responsive" alt="Dr. Navid Asadi">
+		</div>
+		<div class="col-md-6">
+			<h3>Dr. Navid Asadi </h3>
+			<p class="text_font">
+				<span class="font-weight-bold">Queries: </span> Technical</p>
+			<p class="text_font">
+				<span class="font-weight-bold">Email: </span>
+				<a href="mailto:nasadi@ece.ufl.edu"> nasadi@ece.ufl.edu</a>
+			</p>
+			<p class="text_font">
+				<span class="font-weight-bold">Homepage: </span>
+				<a target="_blank" href="http://nasadi.ece.ufl.edu/"> nasadi.ece.ufl.edu/</a>
+			</p>
+			<p class="text_font">
+				<span class="font-weight-bold">Mailing Address: </span>
+				</br>
+				University of Florida </br>
+				332 Benton hall, PO Box 116200 </br>
+				Gainesville, FL 32611-6200
+			</p>
+		</div>
+	</div>
+
+	<div class="row section">
+		<div class="col-md-3">
+			<img src="{{url_for('static', filename='images/site_images/DF.jpg')}}" class="img-responsive" alt="Dr. Domenic Forte">
+		</div>
+		<div class="col-md-6">
+			<h3>Dr. Domenic Forte </h3>
+			<p class="text_font">
+				<span class="font-weight-bold">Queries: </span> General, Technical</p>
+			<p class="text_font">
+				<span class="font-weight-bold">Email: </span>
+				<a href="mailto:dforte@ece.ufl.edu"> dforte@ece.ufl.edu</a>
+			</p>
+			<p class="text_font">
+				<span class="font-weight-bold">Homepage: </span>
+				<a target="_blank" href="http://dforte.ece.ufl.edu/"> dforte.ece.ufl.edu</a>
+			</p>
+			<p class="text_font">
+				<span class="font-weight-bold">Mailing Address: </span>
+				</br>
+				University of Florida </br>
+				216 Larsen Hall, P. O. Box 116200 </br>
+				Gainesville, FL 32611-6200
+			</p>
+		</div>
+	</div>
+
+	<div class="row section">
+		<div class="col-md-3">
+			<img src="{{url_for('static', filename='images/site_images/MT.jpg')}}" class="img-responsive" alt="Dr. Mark Tehranipoor">
+		</div>
+		<div class="col-md-6">
+			<h3>Dr. Mark Tehranipoor</h3>
+			<p class="text_font">
+				<span class="font-weight-bold">Queries: </span> General </p>
+			<p class="text_font">
+				<span class="font-weight-bold">Email: </span>
+				<a href="mailto:tehranipoor@ece.ufl.edu"> tehranipoor@ece.ufl.edu </a>
+			</p>
+			<p class="text_font">
+				<span class="font-weight-bold">Homepage: </span>
+				<a target="_blank" href="http://tehranipoor.ece.ufl.edu/"> tehranipoor.ece.ufl.edu </a>
+			</p>
+			<p class="text_font">
+				<span class="font-weight-bold">Mailing Address: </span>
+				</br>
+				University of Florida </br>
+				325 Benton Hall, P.O. Box 116200 </br>
+				Gainesville, FL 32611-6200
+			</p>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}

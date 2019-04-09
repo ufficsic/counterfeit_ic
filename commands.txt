@@ -1,0 +1,21 @@
+
+#Venv
+venv\Scripts\activate
+
+# Run Server
+python manage.py runserver
+
+# Shell Command
+python manage.py shell
+
+# Migration Commands
+python manage.py db init (Only once)
+python manage.py db migrate
+python manage.py db upgrade
+python manage.py db downgrade
+
+pip
+pip freeze > requirements.txt
+pip install -r requirements.txt
+pip install Flask-Excel && pip freeze > requirements.txt
+

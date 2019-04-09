@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Couinterfeit-IC{% endblock %}
+{% block head %} {{ super() }}{% endblock %}
+{% block content %}
+
+<div class="container grey_block">
+    <h2 class="text-center">Add IC Samples</h2>
+    <div style="margin: 50px;"></div>
+    
+    {% include "_flashmessages.html" %}
+    {% from "_formhelpers.html" import render_field %}
+
+
+    <form method="POST" action="{{ url_for('add_components')}}" role="form" enctype="multipart/form-data">
+        <div class="form-group">
+            <div class="row">
+                <label class="col-md-6" for="manufacturerSelect">Manufacturer</label>
+                <select class="form-control col-md-6" name="manufacturer" id="manufacturer">
+                    <option value="-1">Select a Manufacturers</option>
+                    {% for manufacturer in manufacturers %}
+                    <option value={{ manufacturer.id }}>{{ manufacturer.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <label class="col-md-6" for="ProductSelect">Product</label>
+                <select class="col-md-6 form-control" name="product" id="product">
+                    <option value="-1" selected>Select a Product</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            {{ form.hidden_tag() }} {{ render_field(form.archive, class='form-control') }} {{ form.submit() }}
+        </div>
+    </form>
+</div>
+
+<script src="{{ url_for('static', filename='js/inventory/add_components.js') }}"></script>
+
+
+{% endblock %}

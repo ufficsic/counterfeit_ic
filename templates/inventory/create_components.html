@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Couinterfeit-IC{% endblock %}
+{% block head %} {{ super() }}{% endblock %}
+{% block content %}
+
+<div class="container grey_block">
+    <h2 class="text-center">Create New Product</h2>
+    <div style="margin: 50px;"></div>
+
+    {% include "_flashmessages.html" %}
+    {% from "_formhelpers.html" import render_field %}
+    <form method="POST" action="{{ url_for('create_components')}}" role="form" enctype="multipart/form-data">
+        <div class="form-group">
+            {{ form.hidden_tag() }} {{ render_field(form.manufacturer, class='form-control') }}
+        </div>
+        <div class="form-group">
+            {{ form.hidden_tag() }} {{ render_field(form.product, class='form-control') }} {{ render_field(form.pspec,
+            class='form-control')
+            }} {{ render_field(form.pimage, class='form-control') }}
+        </div>
+        <div class="form-group">
+            {{ form.hidden_tag() }} {{ render_field(form.archive, class='form-control') }} {{ form.submit() }}
+        </div>
+    </form>
+</div>
+
+{% endblock %}

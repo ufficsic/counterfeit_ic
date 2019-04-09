@@ -1,0 +1,274 @@
+{% extends "base.html" %}
+{% block title %}Couinterfeit-IC - Test{% endblock %}
+{% block head %} {{ super() }}
+<link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet"> {% endblock %}
+{% block content %}
+
+<div class="container">
+
+    {% include "_flashmessages.html" %}
+
+    <div class="box">
+        <div class="flexItem">
+            <h2 class="text-center main_text"> Welcome to Counterfeit-IC.org</h2>
+        </div>
+        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner" role="listbox">
+                <div class="carousel-item active">
+                    <div class="row">
+                        <div class="col-5 image_tag_one">
+                            <img class="img-fluid" src="{{url_for('static', filename='images/slideshow/69_22_scaled.jpg')}}"
+                                alt="First slide">
+                        </div>
+                        <div class="col-5 image_info_one">
+                            <div class="text-center">
+                                <h3>Defect Description</h3>
+                            </div>
+                            <br>
+                            <div class="text-center">
+                                <h4 class="carousal_text">
+                                    <strong> Ghost markings</strong> appears when the counterfeiters do not remove
+                                    entirely the original
+                                    marking before printing the new one</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-5 image_tag_two">
+                            <img class="img-fluid" src="{{url_for('static', filename='images/slideshow/17_23_scaled.jpg')}}"
+                                alt="First slide">
+                        </div>
+                        <div class="col-5 image_info_two">
+                            <div class="text-center">
+                                <h3>Defect Description</h3>
+                            </div>
+                            <br>
+                            <div class="text-center">
+                                <h4 class="carousal_text">
+                                    <strong> Texture variation</strong> is usually a consequence of sanding, remarking
+                                    or resurfacing
+                                    which are believed to be some of the most frequent but yet challenging to detect
+                                    phenomena
+                                    in counterfeit ICs</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-5 image_tag_one">
+                            <img class="img-fluid" src="{{url_for('static', filename='images/slideshow/1_14_scaled.jpg')}}"
+                                alt="First slide">
+                        </div>
+                        <div class="col-5 image_info_one">
+                            <div class="text-center">
+                                <h3>Defect Description</h3>
+                            </div>
+                            <br>
+                            <div class="text-center">
+                                <h4 class="carousal_text">
+                                    <strong> Oxidation</strong> and corrosion on leads are caused when a part is kept
+                                    for a long time
+                                    without proper protection</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row">
+                        <div class="col-5 image_tag_one">
+                            <img class="img-fluid" src="{{url_for('static', filename='images/slideshow/68_19_scaled.jpg')}}"
+                                alt="First slide">
+                        </div>
+                        <div class="col-5 image_info_four">
+                            <div class="text-center">
+                                <h3>Defect Description</h3>
+                            </div>
+                            <br>
+                            <div class="text-center">
+                                <h4 class="carousal_text">
+                                    <strong> Contamination</strong> indicates that the component could potentially be
+                                    recycled</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+        <div class="p-3"></div>
+    </div>
+
+
+    <div class=" box">
+        <p class="intro_text">A resource sponsored by the National Science Foundation to promote research and awareness
+            for counterfeit electronics
+            detection and avoidance. This website contains a public repository that allows researchers, students, and
+            practitioners
+            to:
+        </p>
+
+        <div class="intro_list">
+            <div class="intro_element">
+                <strong class="body_heading"> VIEW</strong>
+                and
+                <strong class="body_heading">EXPORT </strong>
+                images and statistical information related to defects of counterfeit ICs</div>
+            <div class="intro_element">
+                <strong class="body_heading"> UPLOAD</strong>
+                images of defects found by physical inspection of counterfeit ICs</div>
+            <div class="intro_element ">
+                <strong class="body_heading"> DEVELOP</strong>
+                automated counterfeit IC detection techniques</div>
+            <div class="intro_element">
+                <strong class="body_heading"> LEARN</strong>
+                more about the defects found in counterfeit ICs and counterfeit IC detection </div>
+        </div>
+        <br>
+
+        <div class="reference">
+            <div class="reference_text">Please cite the following paper when using the images, stats, etc. obtained
+                from counterfeit-IC.org: </div>
+            </br>
+            <a href="https://asm.confex.com/asm/istfa16/webprogram/Paper42425.html" target="_blank">
+                <div class="reference_textname">
+                    <strong>N. Asadizanjani, S. Gattigowda, N. Dunn, M. Tehranipoor, D. Forte, “A Database for
+                        Counterfeit Electronics
+                        and Automatic Defect Detection Based on Image Processing and Machine Learning," International
+                        Symposium
+                        for Testing and Failure Analysis (ISTFA), Nov. 2016. </strong>
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+    <div class=" box">
+        <h3>Mission Statement</h3>
+        <div class="reference_text">
+            Counterfeit electronics are a prevailing supply chain issue, which have continued to become more widespread
+            in recent years.
+            Critical systems have long life cycles and diminishing manufacturing source issues, making them a prime
+            target
+            for economically motivated counterfeiters. Counterfeit electronics create risks and life-threating issues,
+            especially
+            when incorporated into such critical systems. Since most of the chips in the market today are not equipped
+            with
+            mechanisms to aid in counterfeit detection, physical inspection is the most relied upon approach. During
+            physical
+            inspection, defects related to the exterior, interior, and material composition are extracted from the
+            component
+            under test, and these anomalies are used to determine if it is counterfeit. Physical inspection does not
+            rely
+            on electrical functionality, making it widely applicable to the diverse range of electronic chips in the
+            market
+            (analog, digital, mixed signal, large, small, etc.)
+            <br>
+            <br>
+            <a href="javascript:showMore()" id="read_more">Read More</a>
+            <span class="more_text">
+                There are many longstanding challenges associated with physical inspection. First and foremost, in
+                order to evade detection
+                counterfeiters evolve and improve their methods over time. This can result in new defects and/or
+                changes
+                in the frequency of the defects found in counterfeit parts. There are few (if any) initiatives aimed at
+                tracking
+                such changes, making it difficult to develop accurate assessment of risk. Second, counterfeit testing
+                is
+                typically performed by subject matter experts (SMEs), which is time consuming, results in
+                inconsistent/subjective
+                results, and is difficult to adapt. Automated approaches that could relieve these issues need to be
+                developed.
+                Third, there are a diverse set of counterfeit IC types within the supply chain, all of which have their
+                own
+                unique defects that require a gamut of expensive tests/equipment to detect. Any research that could
+                reduce
+                the time and cost associated with physical inspection would be an immense help.
+                <br>
+                <br> The main barrier towards overcoming the above challenges is a lack of data. Developing and
+                improving counterfeit
+                detection through physical inspection requires images and measurements from a variety of counterfeit
+                ICs.
+                In general, researchers in academia do not have access to the state-of-the-art equipment, counterfeit
+                samples,
+                and experience necessary to perform physical inspection on suspect parts. On the other hand, the test
+                labs
+                with access do not have the time, resources, and motivation to devote to exhaustive data collection.
+                Our
+                goal in developing this repository is to provide the community with access to such data. To this end,
+                the
+                team at UF/ FICS Research has spent countless hours collecting measurements and will continue to
+                maintain
+                Counterfeit-IC.org over the course of this NSF sponsored project. We hope that researchers will take
+                advantage
+                of this resource to push the boundaries of counterfeit research as well as to share their own data with
+                the
+                rest of the community.
+            </span>
+        </div>
+    </div>
+
+    <div class=" box">
+        <h3>Counterfeit-IC.org Management Team:</h3>
+        <h5 class="reference_text">Domenic Forte, University of Florida</h5>
+        <h5 class="reference_text">Navid Asadizanjani, University of Florida</h5>
+        <h5 class="reference_text">Mark Tehranipoor, University of Florida</h5>
+    </div>
+
+    <div class="box">
+        <h3>Disclaimer:</h3>
+        <br>
+        <div class="reference_text">The defects that this website seeks to highlight are those commonly specified in
+            counterfeit standards (e.g., AS6171).
+            We refer to them as ‘counterfeit defects’ in the text below. Please note the following:</div>
+        <br>
+        <ol>
+            <li>
+                <div>Although some of the counterfeit defects shown here may overlap with manufacturing and packaging
+                    defects
+                    (e.g., those related to reliability, yield, serviceability, and ship-product-quality-levels), this
+                    website
+                    is in no way meant to track such defects. Manufacturing and packaging defects are already well
+                    documented
+                    and such information is often kept proprietary (with good reason).</div>
+            </li>
+            <li>
+                <div>The appearance of any single counterfeit defect does not necessarily indicate that a component is
+                    counterfeit.
+                    Similarly, it is impossible to determine if any components have been modified maliciously or
+                    nonmaliciously
+                    either at the foundry or while in the supply chain. The Counterfeit-IC.org Management team cannot
+                    and
+                    does not draw any conclusions relating to such questions on this website. We simply report the
+                    counterfeit
+                    defects that we (or other registered users) have found on components readily obtained in the
+                    market.</div>
+            </li>
+            <li>
+                <div>The images appearing on this website have been collected and provided primarily with research and
+                    educational
+                    purposes in mind. Nevertheless, should any manufacturer take exception to images, manufacturer
+                    names,
+                    product names, etc. that appear on this website, please contact us to request their removal.</div>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<script>
+    function showMore() {
+        $('.more_text').show(); /* show the .more_text span */
+        $("#read_more").hide();
+    };
+</script>
+
+{% endblock %}

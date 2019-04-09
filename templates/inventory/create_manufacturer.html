@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Couinterfeit-IC{% endblock %}
+{% block head %} {{ super() }}{% endblock %}
+{% block content %}
+
+
+<div class="container grey_block">
+    <h2 class="body_heading">Create New Manufacturer</h2>
+    {% include "_flashmessages.html" %}
+    <form action="{{url_for('create_manufacturer')}}" method="post" enctype="multipart/form-data">
+        <p>
+            <label for='manufacturer'>Manufacturer Name:</label>
+            <input type='text' name='manufacturer_name' id='manufacturer_name' maxlength="50" />
+        </p>
+
+        <input type="submit" value="Submit" />
+    </form>
+</div>
+
+{% endblock %}

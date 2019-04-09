@@ -1,0 +1,10 @@
+.section {
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.text_font {
+    font-family: Arial,"DomaineText",Georgia,serif;
+    font-size: 1.1em;
+    margin-bottom: 2px;
+}
