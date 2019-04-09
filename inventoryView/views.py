@@ -35,7 +35,7 @@ def select_view_product():
 
 
 @app.route('/edit/products/select/', methods=('GET', 'POST'))
-@approval_required
+@contributor_required
 def select_edit_product():
     manufacturers = Manufacturer.query.all()
     products = Product.query.all()
@@ -50,22 +50,38 @@ def select_edit_product():
 @app.route('/edit/defects/')
 @contributor_required
 def select_defect_sample():
-    user = session.get('id')
-    samples = db.session.query(
-        Manufacturer.name.label('manufacturer'),
-        Product.name.label('product'),
-        Chip.id.label('chip_id'),
-        Sample.id.label('sample_id'),
-        Sample.creation_date.label('sample_creation_date'),
-    ).filter(
-        Chip.id == Sample.chip
-    ).filter(
-        Chip.user == user
-    ).filter(
-        Chip.product == Product.id
-    ).filter(
-        Chip.manufacturer == Manufacturer.id
-    ).all()
+    samples = None
+    if session.get('is_admin'):
+        samples = db.session.query(
+            Manufacturer.name.label('manufacturer'),
+            Product.name.label('product'),
+            Chip.id.label('chip_id'),
+            Sample.id.label('sample_id'),
+            Sample.creation_date.label('sample_creation_date'),
+        ).filter(
+            Chip.id == Sample.chip
+        ).filter(
+            Chip.product == Product.id
+        ).filter(
+            Chip.manufacturer == Manufacturer.id
+        ).all()
+    else:
+        user = session.get('id')
+        samples = db.session.query(
+            Manufacturer.name.label('manufacturer'),
+            Product.name.label('product'),
+            Chip.id.label('chip_id'),
+            Sample.id.label('sample_id'),
+            Sample.creation_date.label('sample_creation_date'),
+        ).filter(
+            Chip.id == Sample.chip
+        ).filter(
+            Chip.user == user
+        ).filter(
+            Chip.product == Product.id
+        ).filter(
+            Chip.manufacturer == Manufacturer.id
+        ).all()
     return render_template(
         'inventory/edit_defect.html',
         samples=samples,
@@ -237,6 +253,7 @@ def edit_product(product_id):
 
 @app.route('/view/products/report/', defaults={'product_id': None}, methods=('GET', 'POST'))
 @app.route('/view/products/report/<int:product_id>/', methods=['GET', 'POST'])
+@approval_required
 def product_report(product_id):
     error = None
     reports = []

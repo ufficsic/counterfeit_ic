@@ -9,10 +9,10 @@
 <div class="container grey_block">
     <h3>Dataset Upload instructions</h3>
     <ol>
-        <li>Maximum file upload size is 100MB</li>
-        <li>If you have a dataset with total size bigger than 10MB download the Dataset Zip Builder Python script</li>
-        <li>The Python script creates smaller zip files of 100MB</li>
-        <li>Run Command on Terminal: python pyzip_dataset_builder.py folder_path</li>
+        <li>Maximum file upload size is 100MB.</li>
+        <li>If you have a dataset with total size bigger than 100MB download the Dataset Zip Builder Python script.</li>
+        <li>The Python script creates smaller zip files of 100MB.</li>
+        <li>Run Command on Terminal: python pyzip_dataset_builder.py folder_path.</li>
     </ol>
     <a class="btn btn-primary" href="{{ url_for('static', filename='py_scripts/pyzip_dataset_builder.py') }}" download>
         Download Dataset Zip Builder
@@ -79,7 +79,8 @@
                         {% if user.is_admin or user.id == archive.user %}
                         <div class="form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" name="archive_id" type="checkbox" value="{{ archive.id }}">
+                                <input class="form-check-input" name="archive_id" type="checkbox"
+                                    value="{{ archive.id }}">
                             </label>
                         </div>
                         {% endif %}

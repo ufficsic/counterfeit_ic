@@ -16,8 +16,8 @@ def approval_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if (
-            session.get('username') is None or 
-            session.get('is_approved') is None or 
+            session.get('username') is None or
+            session.get('is_approved') is None or
             session.get('is_approved') is False
         ):
             flash('Login Required to access this resource!', 'error')
@@ -32,11 +32,11 @@ def contributor_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if (
-            session.get('username') is None or 
-            session.get('is_approved') is None or 
-            session.get('x') is False or
-            session.get('is_contributor') is None or 
-            session.get('is_contributor') is False 
+            session.get('username') is None or
+            session.get('is_approved') is None or
+            session.get('is_approved') is False or
+            session.get('is_contributor') is None or
+            session.get('is_contributor') is False
         ):
             flash('Contibutor Access restricted, contact admin!', 'error')
             flash('Admin info is found in the Contact tab!', 'error')
@@ -50,8 +50,8 @@ def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if (
-            session.get('username') is None or 
-            session.get('is_admin') is None or 
+            session.get('username') is None or
+            session.get('is_admin') is None or
             session.get('is_admin') is False
         ):
             flash('Admin Access restricted, contact admin!', 'error')

@@ -3,6 +3,20 @@
 {% block head %} {{ super() }}{% endblock %}
 {% block content %}
 
+
+<div class="container grey_block">
+    <h3>Components Upload instructions</h3>
+    <ol>
+        <li>Create a zip archive containing the Excel sheet and the images folder.</li>
+        <li>Maximum zip file size is 100MB.</li>
+        <li>Check Instructions tab for detailed instructions.</li>
+        <li>Run Command on Terminal: python pyzip_components_builder.py folder_path.</li>
+    </ol>
+    <a class="btn btn-primary" href="{{ url_for('static', filename='py_scripts/pyzip_components_builder.py') }}" download>
+        Download Dataset Zip Builder
+    </a>
+</div>
+
 <div class="container grey_block">
     <h2 class="text-center">Create New Product</h2>
     <div style="margin: 50px;"></div>
