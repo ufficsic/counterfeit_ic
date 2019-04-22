@@ -35,6 +35,12 @@ def create_components():
         chip = get_or_create_model(Chip, user=session.get(
             'id'), manufacturer=manufacturer.id, product=product.id)
         sample = create_sample(chip)
+        print('----------------------------------------------------------')
+        print(manufacturer)
+        print(product)
+        print(chip)
+        print(sample)
+        print('----------------------------------------------------------')
         processed_count, error_count = process_archive(
             request, manufacturer, product, chip, sample)
         if error_count > 0:
@@ -151,6 +157,9 @@ def process_archive(request, manufacturer, product, chip, sample):
             image_path = os.path.join(temp, image).replace("\\", "/")
             img_ext = os.path.splitext(image_path)[1].lower()
 
+            print('---------------image_path---------------')
+            print(image_path)
+            print('-------------------------------------------------')
             # print(image_path)
             if (not os.path.isfile(image_path)):
                 logging.info("Image path doesn't exist: " + image_path)
