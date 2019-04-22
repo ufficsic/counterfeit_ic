@@ -9,7 +9,6 @@ from glob import glob
 import shutil
 import time
 
-
 DEFECT_NAME_MAP = {
     'Misaligned or Missing Balls or Columns': 'Misaligned/Missing Balls/Columns | Mechanical | Lead/Balls/Columns',
     'No ESD Bags for ESD Sensitive Devices': 'No ESD Bags for ESD Sensitive Devices | Procedural | Packaging/Shipping',
