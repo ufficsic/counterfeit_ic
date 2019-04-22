@@ -7,13 +7,13 @@ class Manufacturer(db.Model):
     __tablename__ = 'manufacturer'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
-    
+
     def __init__(self, name):
         self.name = name.lower()
 
     def __repr__(self):
         return '<Manufacturer %r>' % self.name.capitalize()
-    
+
 
 class Product(db.Model):
     __tablename__ = 'product'
@@ -33,6 +33,7 @@ class Product(db.Model):
 
     def __repr__(self):
         return '<Product %r>' % self.name.capitalize()
+
 
 class ProductSchema(ma.ModelSchema):
     class Meta:
@@ -81,10 +82,12 @@ class Defect(db.Model):
     def __repr__(self):
         return '<Defect %r>' % self.id
 
+
 class Sample(db.Model):
     __tablename__ = 'sample'
     id = db.Column(db.Integer, primary_key=True)
     chip = db.Column(db.Integer, db.ForeignKey('chip.id'))
+    # sample_id = db.Column(db.Integer)
     creation_date = db.Column(db.DateTime)
     is_approved = db.Column(db.Boolean, default=True)
 
@@ -103,7 +106,8 @@ class Chip(db.Model):
     product = db.Column(db.Integer, db.ForeignKey('product.id'))
     manufacturer = db.Column(db.Integer, db.ForeignKey('manufacturer.id'))
     is_approved = db.Column(db.Boolean, default=True)
-    __table_args__ = (db.UniqueConstraint('user', 'product', 'manufacturer', name='user_manufacturer_product'),)
+    __table_args__ = (db.UniqueConstraint('user', 'product',
+                                          'manufacturer', name='user_manufacturer_product'),)
 
     def __init__(self, user, manufacturer, product):
         self.user = user

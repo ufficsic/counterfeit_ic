@@ -87,7 +87,10 @@
                 </td>
                 <td>
                     <div>
-                        <a class="" href="{{ url_for('static', filename=defect_image_folder + '/' + defect.d_image ) }}">view</a>
+                        <a class="" href="{{ url_for('static', filename=defect_image_folder + '/' + defect.d_image ) }}"
+                            onclick="window.open(this.href, 'newwindow', 'width=400, height=400, resizable=yes, scrollbars=yes'); return false;">
+                            view
+                        </a>
                     </div>
                 </td>
             </tr>

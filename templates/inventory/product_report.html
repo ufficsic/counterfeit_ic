@@ -18,7 +18,8 @@
             <td>Product Specification: </td>
             <td>
                 <div>
-                    <a class="" href="{{ pspec.url(product.spec_file_name) }}">
+                    <a class="" href="{{ pspec.url(product.spec_file_name) }}"
+                        onclick="window.open(this.href, 'newwindow', 'width=600, height=600, resizable=yes, scrollbars=yes'); return false;">
                         view spec</a>
                 </div>
             </td>
@@ -28,7 +29,8 @@
             <td>Product Image: </td>
             <td>
                 <div>
-                    <a class="" href="{{ pimage.url(product.spec_image_name) }}">
+                    <a class="" href="{{ pimage.url(product.spec_image_name) }}"
+                        onclick="window.open(this.href, 'newwindow', 'width=400, height=400, resizable=yes, scrollbars=yes'); return false;">
                         view image</a>
                 </div>
             </td>
@@ -78,7 +80,10 @@
                 </td>
                 <td>
                     <div>
-                        <a class="" href="{{ url_for('static', filename=defect_image_folder + '/' + report.image ) }}">view</a>
+                        <a href="{{ url_for('static', filename=defect_image_folder + '/' + report.image ) }}"
+                            onclick="window.open(this.href, 'newwindow', 'width=400, height=400, resizable=yes, scrollbars=yes'); return false;">
+                            View
+                        </a>
                     </div>
                 </td>
                 <td>
