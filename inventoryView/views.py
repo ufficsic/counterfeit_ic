@@ -260,6 +260,7 @@ def product_report(product_id):
     if (product_id or (request.method == 'POST' and request.form.get('product') != '-1')):
         product_id = product_id if (
             product_id) else request.form.get('product')
+
         product = Product.query.filter_by(
             id=product_id
         ).first()
@@ -273,11 +274,11 @@ def product_report(product_id):
             Product.id == product_id
         ).first()
 
-        reports = db.session.query(
+        product_reports = db.session.query(
             Chip.id,
             DefectType,
             Defect.defect_image_name.label('image'),
-            func.count(Defect.id).label('occurences')
+            func.count(Defect.id).label('occurences'),
         ).filter(
             Chip.id == Defect.chip
         ).filter(
@@ -287,6 +288,36 @@ def product_report(product_id):
         ).group_by(
             DefectType.id
         ).all()
+
+        defect_ids = [r.DefectType.id for r in product_reports]
+
+        all_product_frequency = db.session.query(
+            DefectType,
+            func.count(DefectType.id).label('occurences'),
+        ).filter(
+            Chip.product == Product.id
+        ).filter(
+            Chip.id == Defect.chip
+        ).filter(
+            DefectType.id == Defect.defect_type
+        ).filter(
+            DefectType.id.in_(defect_ids)
+        ).group_by(
+            DefectType.id
+        ).all()
+
+        total_occurences = sum([r.occurences for r in product_reports])
+        all_product_frequency_map = {
+            f.DefectType.id: f.occurences for f in all_product_frequency}
+
+        reports = []
+        for r in product_reports:
+            d = r._asdict()
+            d['in_frequency'] = round(
+                ((float(d['occurences']) / total_occurences) * 100), 2)
+            d['all_frequency'] = round(
+                ((float(d['occurences']) / all_product_frequency_map[d['id']]) * 100), 2)
+            reports.append(d)
 
         defect_image_folder = os.path.join(
             app.config['IMAGE_FOLDER'],
@@ -430,7 +461,7 @@ def defect_report(defect_id):
             id=defect_id
         ).first()
 
-        products = db.session.query(
+        product_reports = db.session.query(
             Product,
             Manufacturer.name.label('manufacturer'),
             func.count(Product.id).label('occurences')
@@ -447,6 +478,14 @@ def defect_report(defect_id):
         ).group_by(
             Product.id
         ).all()
+
+        total_occurences = sum([r.occurences for r in product_reports])
+        products = []
+        for r in product_reports:
+            d = r._asdict()
+            d['in_frequency'] = round(
+                ((float(d['occurences']) / total_occurences) * 100), 2)
+            products.append(d)
 
         return render_template(
             'inventory/defect_report.html',
