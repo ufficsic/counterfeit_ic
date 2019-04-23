@@ -21,4 +21,5 @@ pip install Flask-Excel && pip freeze > requirements.txt
 
 pyinstaller
 pyinstaller --onefile --add-data "sampleSubmitForm.xlsx;." counterfeit_ic_driver.py
+pyinstaller --onefile counterfeit_ic_driver.py
 
