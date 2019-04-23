@@ -86,7 +86,7 @@ CURRENT_DIR = Path(__file__).parent.absolute()
 ROW_START = 68
 SAMPLE_ID = 1
 
-import sys
+
 def create_workbook(base_dir, files_to_zip, zip_path_name, upload_workbook_path, defect_name_map):
     # xfile = shutil.copyfile(sample_upload_file_path, upload_workbook_path)
     wb = Workbook()
@@ -150,7 +150,8 @@ def create_image_upload_archive(path, base_dir, zip_image_dir, accepted_images, 
                     total_size = 0.0
                     files_to_zip.append(file)
     if files_to_zip:
-        create_zip_archive(base_dir, product_dir, files_to_zip, defect_name_map)
+        create_zip_archive(base_dir, product_dir,
+                           files_to_zip, defect_name_map)
         total_size = 0.0
         files_to_zip.clear()
 
