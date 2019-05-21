@@ -74,13 +74,13 @@
             <tr>
                 <td>
                     <div>
-                        <a href="{{ url_for('defect_report', defect_id=report.DefectType.id) }}">
-                            {{ report.DefectType.name }}</a>
+                        <a href="{{ url_for('defect_report', defect_id=report.defect_type_id) }}">
+                            {{ report.defect_name }}</a>
                     </div>
                 </td>
                 <td>
                     <div>
-                        <a href="{{ url_for('static', filename=defect_image_folder + '/' + report.image ) }}"
+                        <a href="{{ url_for('static', filename=defect_image_folder + '/' + report.images[0] ) }}"
                             onclick="window.open(this.href, 'newwindow', 'width=400, height=400, resizable=yes, scrollbars=yes'); return false;">
                             View
                         </a>

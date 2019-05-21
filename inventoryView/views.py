@@ -59,7 +59,7 @@ def select_defect_sample():
             Sample.id.label('sample_id'),
             Sample.creation_date.label('sample_creation_date'),
         ).filter(
-            Chip.id == Sample.chip
+            Chip.sample == Sample.id
         ).filter(
             Chip.product == Product.id
         ).filter(
@@ -74,7 +74,7 @@ def select_defect_sample():
             Sample.id.label('sample_id'),
             Sample.creation_date.label('sample_creation_date'),
         ).filter(
-            Chip.id == Sample.chip
+            Chip.sample == Sample.id
         ).filter(
             Chip.user == user
         ).filter(
@@ -274,50 +274,97 @@ def product_report(product_id):
             Product.id == product_id
         ).first()
 
-        product_reports = db.session.query(
-            Chip.id,
+        defects_list = db.session.query(
+            Sample.id.label('s_id'),
+            Sample.sample_id.label('s_sid'),
+            Chip.id.label('c_id'),
+            Chip.product.label('p'),
             DefectType,
             Defect.defect_image_name.label('image'),
-            func.count(Defect.id).label('occurences'),
         ).filter(
-            Chip.id == Defect.chip
+            Chip.id == Sample.chip
         ).filter(
-            DefectType.id == Defect.defect_type
+            Sample.id == Defect.sample
+        ).filter(
+            Defect.defect_type == DefectType.id
         ).filter(
             Chip.product == product_id
-        ).group_by(
-            DefectType.id
         ).all()
 
-        defect_ids = [r.DefectType.id for r in product_reports]
+        def_rep = {}
+        defect_id_set = set()
+        for item in defects_list:
+            dmap = def_rep.get(item.DefectType.id, {})
+            dmap['name'] = item.DefectType.name
+            defect_id_set.add(item.DefectType.id)
+            sample_set = dmap.get('samples', set())
+            sample_set.add(item.s_sid)
+            dmap['samples'] = sample_set
+            image_list = dmap.get('images', list())
+            image_list.append(item.image)
+            dmap['images'] = image_list
+            def_rep[item.DefectType.id] = dmap
 
-        all_product_frequency = db.session.query(
-            DefectType,
-            func.count(DefectType.id).label('occurences'),
-        ).filter(
-            Chip.product == Product.id
-        ).filter(
-            Chip.id == Defect.chip
-        ).filter(
-            DefectType.id == Defect.defect_type
-        ).filter(
-            DefectType.id.in_(defect_ids)
-        ).group_by(
-            DefectType.id
-        ).all()
+        defect_id_tuple = tuple(defect_id_set)
+        total_sample_in_product = db.session.execute(
+            """
+            SELECT defect_type.id, COUNT(DISTINCT sample.sample_id) as total
+            FROM sample, defect, chip, defect_type
+            WHERE chip.id = defect.chip
+            AND sample.chip = chip.id
+            AND defect.defect_type = defect_type.id
+            AND chip.product = {}
+            AND defect_type.id IN {};
+            """.format(product_id, defect_id_tuple)
+        ).fetchall()
 
-        total_occurences = sum([r.occurences for r in product_reports])
-        all_product_frequency_map = {
-            f.DefectType.id: f.occurences for f in all_product_frequency}
+        total_sample_in_product_map = {
+            f.id: f.total
+            for f in total_sample_in_product
+        }
 
-        reports = []
-        for r in product_reports:
-            d = r._asdict()
-            d['in_frequency'] = round(
-                ((float(d['occurences']) / total_occurences) * 100), 2)
-            d['all_frequency'] = round(
-                ((float(d['occurences']) / all_product_frequency_map[d['id']]) * 100), 2)
-            reports.append(d)
+        total_sample_with_defect = db.session.execute(
+            """
+            SELECT defect_type.id, COUNT(DISTINCT sample.sample_id) as total
+            FROM sample, defect, defect_type
+            WHERE defect.defect_type = defect_type.id
+            AND defect.sample = sample.id
+            AND defect_type.id IN {};
+            """.format(defect_id_tuple)
+        ).fetchall()
+
+        total_sample_with_defect_map = {
+            f.id: f.total
+            for f in total_sample_with_defect
+        }
+
+        total_samples_count = db.session.execute(
+            """
+            SELECT COUNT(DISTINCT sample.sample_id)
+            as total FROM sample;
+            """
+        ).fetchall()
+        total_samples = total_samples_count[0][0]
+
+        all_product_frequency_list = []
+        for k in def_rep.keys():
+            freq_map = {}
+            freq_map['defect_type_id'] = k
+            freq_map['defect_name'] = def_rep[k].get('name')
+            freq_map['images'] = def_rep[k].get('images')
+            occurences = len(def_rep[k].get('samples'))
+            freq_map['occurences'] = occurences
+            if k in total_sample_in_product_map:
+                freq_map['in_frequency'] = round(
+                    ((float(occurences) / total_sample_in_product_map.get(k)) * 100), 2)
+            else:
+                freq_map['in_frequency'] = 0
+            if k in total_sample_with_defect_map:
+                freq_map['all_frequency'] = round(
+                    ((float(total_sample_with_defect_map.get(k)) / total_samples) * 100), 2)
+            else:
+                freq_map['all_frequency'] = 0
+            all_product_frequency_list.append(freq_map)
 
         defect_image_folder = os.path.join(
             app.config['IMAGE_FOLDER'],
@@ -330,7 +377,7 @@ def product_report(product_id):
             product=product,
             pspec=pspec,
             pimage=pimage,
-            reports=reports,
+            reports=all_product_frequency_list,
             defect_image_folder=defect_image_folder,
             error=error
         )
@@ -461,36 +508,55 @@ def defect_report(defect_id):
             id=defect_id
         ).first()
 
-        product_reports = db.session.query(
-            Product,
-            Manufacturer.name.label('manufacturer'),
-            func.count(Product.id).label('occurences')
-        ).join(
-            Chip
-        ).filter(
-            Manufacturer.id == Product.manufacturer
-        ).filter(
-            Product.id == Chip.product
-        ).filter(
-            Chip.id == Defect.chip
-        ).filter(
-            DefectType.id == Defect.defect_type
-        ).group_by(
-            Product.id
-        ).all()
+        defect_types_count = db.session.execute(
+            """
+            SELECT product.id as pid, product.name as pname, manufacturer.id as mid, manufacturer.name as mname,
+            count(DISTINCT sample.sample_id) as occurences
+            FROM defect_type, defect, sample, chip, product, manufacturer
+            WHERE defect_type.id = defect.defect_type
+            AND defect.sample = sample.id
+            And defect.chip = chip.id
+            And chip.product = product.id
+            AND chip.manufacturer = manufacturer.id
+            AND defect_type.id = {};
+            """.format(defect_type.id)
+        ).fetchall()
 
-        total_occurences = sum([r.occurences for r in product_reports])
-        products = []
-        for r in product_reports:
-            d = r._asdict()
-            d['in_frequency'] = round(
-                ((float(d['occurences']) / total_occurences) * 100), 2)
-            products.append(d)
+        manufacturer_sample_count = db.session.execute(
+            """
+            SELECT manufacturer.id as mid, count(DISTINCT sample.sample_id) as occurences
+            FROM defect_type, defect, sample, chip, product, manufacturer
+            WHERE defect_type.id = defect.defect_type
+            AND defect.sample = sample.id
+            And defect.chip = chip.id
+            AND chip.manufacturer = manufacturer.id
+            AND defect_type.id = {};
+            """.format(defect_type.id)
+        ).fetchall()
+
+        manufacturer_sample_count_map = {
+            f.mid: f.occurences
+            for f in manufacturer_sample_count
+        }
+
+        reports = []
+        for item in defect_types_count:
+            def_map = {}
+            def_map['id'] = item.pid
+            def_map['name'] = item.pname
+            def_map['manufacturer'] = item.mname
+            def_map['occurences'] = item.occurences
+            if item.mid in manufacturer_sample_count_map:
+                def_map['in_frequency'] = round(
+                        ((float(item.occurences) / manufacturer_sample_count_map.get(item.mid)) * 100), 2)
+            else:
+                def_map['in_frequency'] = 0
+            reports.append(def_map)
 
         return render_template(
             'inventory/defect_report.html',
             defect_type=defect_type,
-            products=products,
+            reports=reports,
             error=error
         )
 
@@ -564,8 +630,6 @@ def download_images():
         m_id = int(request.form.get('manufacturer'))
         p_id = int(request.form.get('product'))
         d_id = int(request.form.get('defect_type'))
-        # if (m_id == -1 and p_id == -1 and d_id == -1):
-        #     return redirect(url_for('select_image_download'))
         try:
             zip_file = get_image_zip(m_id, p_id, d_id)
             return send_file(zip_file, attachment_filename='capsule.zip', as_attachment=True)

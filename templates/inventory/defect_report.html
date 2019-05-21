@@ -50,27 +50,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for product in products %}
+                    {% for report in reports %}
                     <tr>
                         <td>
                             <div>
-                                <a href="{{ url_for('product_report', product_id=product.Product.id) }}">{{
-                                    product.Product.name }}</a>
+                                <a href="{{ url_for('product_report', product_id=report.id) }}">{{
+                                    report.name }}</a>
                             </div>
                         </td>
                         <td>
                             <div>
-                                {{ product.manufacturer }}</a>
+                                {{ report.manufacturer }}</a>
                             </div>
                         </td>
                         <td>
                             <div>
-                                {{ product.occurences }}
+                                {{ report.occurences }}
                             </div>
                         </td>
                         <td>
                             <div>
-                                {{ product.in_frequency }}
+                                {{ report.in_frequency }}
                             </div>
                         </td>
                     </tr>

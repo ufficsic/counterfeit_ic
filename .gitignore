@@ -105,6 +105,7 @@ static/pdf/
 static/images/product_images/
 static/images/defect_images/
 static/archives/
+migrations/
 
 
 # Elastic Beanstalk Files

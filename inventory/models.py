@@ -86,13 +86,14 @@ class Defect(db.Model):
 class Sample(db.Model):
     __tablename__ = 'sample'
     id = db.Column(db.Integer, primary_key=True)
+    sample_id = db.Column(db.Integer)
     chip = db.Column(db.Integer, db.ForeignKey('chip.id'))
-    # sample_id = db.Column(db.Integer)
     creation_date = db.Column(db.DateTime)
     is_approved = db.Column(db.Boolean, default=True)
 
-    def __init__(self, chip_id):
-        self.chip = chip_id
+    def __init__(self, sample_id, chip):
+        self.sample_id = sample_id
+        self.chip = chip
         self.creation_date = datetime.utcnow()
 
     def __repr__(self):

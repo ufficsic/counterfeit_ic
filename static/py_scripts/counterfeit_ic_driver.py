@@ -92,8 +92,7 @@ def create_workbook(base_dir, files_to_zip, zip_path_name, upload_workbook_path,
     wb = Workbook()
     ws = wb.get_sheet_by_name(wb.sheetnames[0])
     row = ROW_START
-    sample_id = SAMPLE_ID
-    for image_path, arcname in files_to_zip:
+    for image_path, arcname, sample_id in files_to_zip:
         ws.cell(row=row, column=1).value = sample_id
         ws.cell(
             row=row, column=2).value = defect_name_map[image_path.parent.name]
@@ -111,7 +110,7 @@ def create_zip_archive(base_dir, product_dir, files_to_zip, defect_name_map):
     xfile = create_workbook(base_dir, files_to_zip, zip_path_name,
                             upload_workbook_path, defect_name_map)
     with zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED) as zf:
-        for image_path, arcname in files_to_zip:
+        for image_path, arcname, sample_id in files_to_zip:
             zf.write(image_path, arcname)
         zf.write(xfile, os.path.basename(xfile))
     shutil.move(zip_name, base_dir.joinpath(zip_name))
@@ -136,19 +135,27 @@ def create_image_upload_archive(path, base_dir, zip_image_dir, accepted_images, 
                 file_size = file.stat().st_size
                 if ((file_size / 1048576.0) > 100.0):
                     continue
+                if ((total_size + file_size) / 1048576.0) > 100.0:
+                    create_zip_archive(
+                        base_dir, product_dir, files_to_zip, defect_name_map)
+                    files_to_zip.clear()
+                    total_size = 0.0
                 if ((total_size + file_size) / 1048576.0) < 100.0:
                     total_size += file_size
                     sub = PurePosixPath(file.relative_to(base_dir))
                     sub_name = str(sub).replace(' ', '_').replace("/", '_')
+                    file_sample_id = ''
+                    for c in sub.name:
+                        if c.isdigit(): file_sample_id += c
+                        else: break
+                    file_sample_id_num = 1
+                    try:
+                        file_sample_id_num = int(file_sample_id)
+                    except:
+                        pass
                     arcname = PurePosixPath(zip_image_dir).joinpath(sub_name)
-                    files_to_zip.append((file, arcname))
-                elif ((total_size + file_size) / 1048576.0) > 100.0:
-                    create_zip_archive(
-                        base_dir, product_dir, files_to_zip, defect_name_map)
-                    files_to_zip.clear()
-                    product_dir = Path()
-                    total_size = 0.0
-                    files_to_zip.append(file)
+                    files_to_zip.append((file, arcname, file_sample_id_num))
+
     if files_to_zip:
         create_zip_archive(base_dir, product_dir,
                            files_to_zip, defect_name_map)
@@ -159,12 +166,6 @@ def create_image_upload_archive(path, base_dir, zip_image_dir, accepted_images, 
 def create_archive(path):
     path = Path(path).resolve()
     BASE_DIR = Path(path).resolve()
-    # sample_upload_file_path = CURRENT_DIR.joinpath(Path(SAMPLE_SUBMIT_FORM))
-    # if not sample_upload_file_path.is_file():
-    #     print('Error: sampleSubmitForm.xlsx is not found.')
-    #     print('Please download the sampleSubmitForm.xlsx from https://counterfeit-ic.ece.ufl.edu/instructions')
-    #     print('Place the sampleSubmitForm.xlsx and pyzip_components_builder.py in the same directory.')
-    #     return
     create_image_upload_archive(path, BASE_DIR, ZIP_IMAGE_DIR,
                                 ACCEPTED_IMAGES, DEFECT_NAME_MAP)
 
@@ -175,10 +176,7 @@ if __name__ == "__main__":
             "Enter the absolute path of the folder containing the images to be zipped: ")
         if not path:
             raise Exception(
-                'Please Enter a valid path containing the images to be zipped!')
-        sample_id = input('Enter the sample_id. Default sample_id is 1: ')
-        if (sample_id):
-            SAMPLE_ID = int(sample_id)
+                'Please Enter a valid path containing the images to be zipped!')    
         create_archive(path)
     except Exception as e:
         print('------------------ERROR--------------------------')
