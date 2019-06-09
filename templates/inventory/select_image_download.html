@@ -39,7 +39,7 @@
         <div class="form-group">
             <label for="UserSelect">User</label>
             <select class="form-control" name="user" id="user">
-                <option value="-1" selected>Choose a Defect Type</option>
+                <option value="-1" selected>Choose a User</option>
                 {% for user in user_list %}
                 <option value={{ user.id }}>{{ user.username }}</option>
                 {% endfor %}
