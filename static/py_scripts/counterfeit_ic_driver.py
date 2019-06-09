@@ -103,7 +103,8 @@ def create_workbook(base_dir, files_to_zip, zip_path_name, upload_workbook_path,
 
 
 def create_zip_archive(base_dir, product_dir, files_to_zip, defect_name_map):
-    zip_path_name = base_dir.name + '_' + product_dir.name + \
+    manufacturer_dir = product_dir.parent.name
+    zip_path_name = manufacturer_dir + '_' + product_dir.name + \
         '_' + str(time.time()).replace('.', '_')
     upload_workbook_path = Path(zip_path_name + '.xlsx')
     zip_name = Path(zip_path_name + '.zip')
@@ -113,7 +114,8 @@ def create_zip_archive(base_dir, product_dir, files_to_zip, defect_name_map):
         for image_path, arcname, sample_id in files_to_zip:
             zf.write(image_path, arcname)
         zf.write(xfile, os.path.basename(xfile))
-    shutil.move(zip_name, base_dir.joinpath(zip_name))
+    shutil.move(zip_name, base_dir.joinpath(
+        manufacturer_dir).joinpath(zip_name))
     Path(xfile).unlink()
 
 
@@ -146,8 +148,10 @@ def create_image_upload_archive(path, base_dir, zip_image_dir, accepted_images, 
                     sub_name = str(sub).replace(' ', '_').replace("/", '_')
                     file_sample_id = ''
                     for c in sub.name:
-                        if c.isdigit(): file_sample_id += c
-                        else: break
+                        if c.isdigit():
+                            file_sample_id += c
+                        else:
+                            break
                     file_sample_id_num = 1
                     try:
                         file_sample_id_num = int(file_sample_id)
@@ -176,7 +180,7 @@ if __name__ == "__main__":
             "Enter the absolute path of the folder containing the images to be zipped: ")
         if not path:
             raise Exception(
-                'Please Enter a valid path containing the images to be zipped!')    
+                'Please Enter a valid path containing the images to be zipped!')
         create_archive(path)
     except Exception as e:
         print('------------------ERROR--------------------------')

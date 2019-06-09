@@ -144,6 +144,20 @@ def process_archive(request, manufacturer, product, chip):
             secondary_type = defect.split('|', 2)[2].strip()
             image_path = os.path.join(temp, image).replace("\\", "/")
             img_ext = os.path.splitext(image_path)[1].lower()
+
+            print('-------------------------------------------------------')
+            print(sample_id)
+            print(defect)
+            print(image)
+            print(defect_name)
+            print(primary_type)
+            print(secondary_type)
+            print(image_path)
+            print(img_ext)
+            print(manufacturer.name)
+            print(product.name)
+            print('-------------------------------------------------------')
+
             if (not os.path.isfile(image_path)):
                 logging.info("Image path doesn't exist: " + image_path)
                 continue
@@ -152,15 +166,32 @@ def process_archive(request, manufacturer, product, chip):
                 len(manufacturer.name) <= 10) else manufacturer.name[0:10]
             product_name = product.name if (
                 len(product.name) <= 10) else product.name[0:10]
+
+            print('-------------------------------------------------------')
+            print(manufacturer_name)
+            print(product_name)
+            print(destination)
+            print('-------------------------------------------------------')
+
             secure_image = secure_filename(
-                sample_id + delim + manufacturer_name + delim + product_name
+                str(sample_id) + delim +
+                manufacturer_name + delim + product_name
                 + delim + defect_name.lower() + delim + str(index)
                 + delim + user_name + img_ext
             )
+
+            print('-------------------------------------------------------')
+            print(secure_image)
+            print('-------------------------------------------------------')
+
             dest = os.path.join(
                 destination,
                 secure_image
             ).replace("\\", "/")
+
+            print('-------------------------------------------------------')
+            print(dest)
+            print('-------------------------------------------------------')
 
             os.rename(image_path, os.path.join(
                 image_folder, defect_image_folder, dest))
