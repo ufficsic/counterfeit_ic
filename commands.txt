@@ -8,6 +8,9 @@ python manage.py runserver
 # Shell Command
 python manage.py shell
 
+# Apache Restart
+sudo service apache2 restart
+
 # Migration Commands
 python manage.py db init (Only once)
 python manage.py db migrate
