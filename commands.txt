@@ -1,6 +1,6 @@
 
 #Venv
-venv\Scripts\activate
+newenv\Scripts\activate
 
 # Run Server
 python manage.py runserver

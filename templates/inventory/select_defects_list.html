@@ -29,11 +29,20 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="manufacturerSelect">Defect</label>
+            <label for="defectSelect">Defect</label>
             <select class="form-control" name="defect_type" id="defect_type">
                 <option value="-1">All Defects</option>
                 {% for defect_type in defect_types %}
                 <option value={{ defect_type.id }}>{{ defect_type.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="userSelect">User</label>
+            <select class="form-control" name="user" id="user">
+                <option value="-1">All Users</option>
+                {% for user in user_list %}
+                <option value={{ user.id }}>{{ user.username }}</option>
                 {% endfor %}
             </select>
         </div>

@@ -133,6 +133,7 @@ def process_archive(request, manufacturer, product, chip):
 
     error_count = 0
     processed_count = 0
+    user_name = session.get('username')
     for row in range(row_start, ws.max_row+1):
         try:
             sample_id = int(ws.cell(row=row, column=1).value)
@@ -152,8 +153,9 @@ def process_archive(request, manufacturer, product, chip):
             product_name = product.name if (
                 len(product.name) <= 10) else product.name[0:10]
             secure_image = secure_filename(
-                manufacturer_name + delim + product_name + delim +
-                defect_name.lower() + delim + str(index) + img_ext
+                sample_id + delim + manufacturer_name + delim + product_name
+                + delim + defect_name.lower() + delim + str(index)
+                + delim + user_name + img_ext
             )
             dest = os.path.join(
                 destination,

@@ -55,32 +55,40 @@ def select_defect_sample():
         samples = db.session.query(
             Manufacturer.name.label('manufacturer'),
             Product.name.label('product'),
+            User.username.label('username'),
             Chip.id.label('chip_id'),
             Sample.id.label('sample_id'),
+            Sample.sample_id.label('sample_sample_id'),
             Sample.creation_date.label('sample_creation_date'),
         ).filter(
-            Chip.sample == Sample.id
+            Chip.id == Sample.chip
         ).filter(
             Chip.product == Product.id
         ).filter(
             Chip.manufacturer == Manufacturer.id
+        ).filter(
+            Chip.user == User.id
         ).all()
     else:
         user = session.get('id')
         samples = db.session.query(
             Manufacturer.name.label('manufacturer'),
             Product.name.label('product'),
+            User.username.label('username'),
             Chip.id.label('chip_id'),
             Sample.id.label('sample_id'),
+            Sample.sample_id.label('sample_sample_id'),
             Sample.creation_date.label('sample_creation_date'),
         ).filter(
-            Chip.sample == Sample.id
+            Chip.id == Sample.chip
         ).filter(
             Chip.user == user
         ).filter(
             Chip.product == Product.id
         ).filter(
             Chip.manufacturer == Manufacturer.id
+        ).filter(
+            Chip.user == User.id
         ).all()
     return render_template(
         'inventory/edit_defect.html',
@@ -569,12 +577,14 @@ def select_defects_list():
     manufacturers = db.session.query(Manufacturer.id, Manufacturer.name).all()
     products = db.session.query(Product.id, Product.name).all()
     defect_types = db.session.query(DefectType.id, DefectType.name).all()
+    user_list = db.session.query(User.id, User.username).all()
     error = None
     return render_template(
         'inventory/select_defects_list.html',
         manufacturers=manufacturers,
         products=products,
         defect_types=defect_types,
+        user_list=user_list,
         error=error
     )
 
@@ -588,13 +598,14 @@ def defects_list():
         m_id = int(request.form.get('manufacturer'))
         p_id = int(request.form.get('product'))
         d_id = int(request.form.get('defect_type'))
+        u_id = int(request.form.get('user'))
 
-        defects_list = get_defects_list(m_id, p_id, d_id)
+        defects_list = get_defects_list(m_id, p_id, d_id, u_id)
         defect_image_folder = os.path.join(
             app.config['IMAGE_FOLDER'],
             app.config['DEFECT_IMAGE_FOLDER']
         ).replace("\\", "/")
-        id_list = {'m_id': m_id, 'p_id': p_id, 'd_id': d_id}
+        id_list = {'m_id': m_id, 'p_id': p_id, 'd_id': d_id, 'u_id': u_id}
 
         return render_template(
             'inventory/defects_list.html',
@@ -613,12 +624,14 @@ def select_image_download():
     manufacturers = db.session.query(Manufacturer.id, Manufacturer.name).all()
     products = db.session.query(Product.id, Product.name).all()
     defect_types = db.session.query(DefectType.id, DefectType.name).all()
+    user_list = db.session.query(User.id, User.username).all()
     error = None
     return render_template(
         'inventory/select_image_download.html',
         manufacturers=manufacturers,
         products=products,
         defect_types=defect_types,
+        user_list=user_list,
         error=error
     )
 
@@ -630,16 +643,17 @@ def download_images():
         m_id = int(request.form.get('manufacturer'))
         p_id = int(request.form.get('product'))
         d_id = int(request.form.get('defect_type'))
+        u_id = int(request.form.get('user'))
         try:
-            zip_file = get_image_zip(m_id, p_id, d_id)
+            zip_file = get_image_zip(m_id, p_id, d_id, u_id)
             return send_file(zip_file, attachment_filename='capsule.zip', as_attachment=True)
         except Exception as exception:
             flash('Error downloading images!', 'error')
     return redirect(url_for('select_image_download'))
 
 
-def get_image_zip(m_id, p_id, d_id):
-    images = get_images(m_id, p_id, d_id)
+def get_image_zip(m_id, p_id, d_id, u_id):
+    images = get_images(m_id, p_id, d_id , u_id)
     zip_file = compress_files(images)
     return zip_file
 
@@ -668,7 +682,30 @@ def compress_files(images):
     return component_zip_file
 
 
-def get_images(m_id, p_id, d_id):
+def get_images(m_id, p_id, d_id, u_id):
+    images = None
+    if (u_id == -1):
+        images = get_images_for_default_user(m_id, p_id, d_id)
+    if (m_id == -1 and p_id == -1 and d_id == -1):
+        images = query_images_by_all_for_user(u_id)
+    elif (m_id > -1 and p_id > -1 and d_id > -1):
+        images = query_images_by_three_filters_for_user(m_id, p_id, d_id, u_id)
+    elif (m_id > -1 and p_id > -1):
+        images = query_images_by_m_p_for_user(m_id, p_id, u_id)
+    elif (m_id > -1 and d_id > -1):
+        images = query_images_by_m_d_for_user(m_id, d_id, u_id)
+    elif (p_id > -1 and d_id > -1):
+        images = query_images_by_p_d_for_user(p_id, d_id, u_id)
+    elif (m_id > -1):
+        images = query_images_by_m_for_user(m_id, u_id)
+    elif (p_id > -1):
+        images = query_images_by_p_for_user(p_id, u_id)
+    elif (d_id > -1):
+        images = query_images_by_d_for_user(d_id, u_id)
+    return images
+
+
+def get_images_for_default_user(m_id, p_id, d_id):
     images = None
     if (m_id == -1 and p_id == -1 and d_id == -1):
         images = query_images_by_all()
@@ -708,6 +745,26 @@ def query_images_by_all():
     return objects
 
 
+def query_images_by_all_for_user(u_id):
+    objects = db.session.execute(
+        """
+            SELECT defect.defect_image_name as file
+            FROM defect
+            INNER JOIN defect_type
+                on defect.defect_type = defect_type.id
+            INNER JOIN chip
+                on defect.chip = chip.id
+            INNER JOIN product
+                on chip.product = product.id
+            INNER JOIN manufacturer
+                on chip.manufacturer = manufacturer.id
+            WHERE chip.user= {}
+            ;
+        """.format(u_id)
+    ).fetchall()
+    return objects
+
+
 def query_images_by_three_filters(m_id, p_id, d_id):
     objects = db.session.execute(
         """
@@ -726,6 +783,29 @@ def query_images_by_three_filters(m_id, p_id, d_id):
             AND defect_type.id={}
             ;
         """.format(m_id, p_id, d_id)
+    ).fetchall()
+    return objects
+
+
+def query_images_by_three_filters_for_user(m_id, p_id, d_id, u_id):
+    objects = db.session.execute(
+        """
+            SELECT defect.defect_image_name as file
+            FROM defect
+            INNER JOIN defect_type
+                on defect.defect_type = defect_type.id
+            INNER JOIN chip
+                on defect.chip = chip.id
+            INNER JOIN product
+                on chip.product = product.id
+            INNER JOIN manufacturer
+                on chip.manufacturer = manufacturer.id
+            WHERE  manufacturer.id={}
+            AND product.id={}
+            AND defect_type.id={}
+            AND chip.user= {}
+            ;
+        """.format(m_id, p_id, d_id, u_id)
     ).fetchall()
     return objects
 
@@ -749,6 +829,26 @@ def query_images_by_m_p(m_id, p_id):
     return objects
 
 
+def query_images_by_m_p_for_user(m_id, p_id, u_id):
+    objects = db.session.execute(
+        """
+            SELECT defect.defect_image_name as file
+            FROM defect
+            INNER JOIN chip
+                on defect.chip = chip.id
+            INNER JOIN product
+                on chip.product = product.id
+            INNER JOIN manufacturer
+                on chip.manufacturer = manufacturer.id
+            WHERE  manufacturer.id={}
+            AND product.id={}
+            AND chip.user= {}
+            ;
+        """.format(m_id, p_id, u_id)
+    ).fetchall()
+    return objects
+
+
 def query_images_by_m_d(m_id, d_id):
     objects = db.session.execute(
         """
@@ -768,6 +868,45 @@ def query_images_by_m_d(m_id, d_id):
     return objects
 
 
+def query_images_by_m_d_for_user(m_id, d_id, u_id):
+    objects = db.session.execute(
+        """
+            SELECT defect.defect_image_name as file
+            FROM defect
+            INNER JOIN defect_type
+                on defect.defect_type = defect_type.id
+            INNER JOIN chip
+                on defect.chip = chip.id
+            INNER JOIN manufacturer
+                on chip.manufacturer = manufacturer.id
+            WHERE  manufacturer.id={}
+            AND defect_type.id={}
+            AND chip.user= {}
+            ;
+        """.format(m_id, d_id, u_id)
+    ).fetchall()
+    return objects
+
+
+def query_images_by_p_d_for_user(p_id, d_id, u_id):
+    objects = db.session.execute(
+        """
+            SELECT defect.defect_image_name as file
+            FROM defect
+            INNER JOIN defect_type
+                on defect.defect_type = defect_type.id
+            INNER JOIN chip
+                on defect.chip = chip.id
+            INNER JOIN product
+                on chip.product = product.id
+            WHERE product.id={}
+            AND defect_type.id={}
+            ;
+        """.format(p_id, d_id, u_id)
+    ).fetchall()
+    return objects
+
+
 def query_images_by_p_d(p_id, d_id):
     objects = db.session.execute(
         """
@@ -781,6 +920,7 @@ def query_images_by_p_d(p_id, d_id):
                 on chip.product = product.id
             WHERE product.id={}
             AND defect_type.id={}
+            AND chip.user= {}
             ;
         """.format(p_id, d_id)
     ).fetchall()
@@ -803,6 +943,23 @@ def query_images_by_m(m_id):
     return objects
 
 
+def query_images_by_m_for_user(m_id, u_id):
+    objects = db.session.execute(
+        """
+            SELECT defect.defect_image_name as file
+            FROM defect
+            INNER JOIN chip
+                on defect.chip = chip.id
+            INNER JOIN manufacturer
+                on chip.manufacturer = manufacturer.id
+            WHERE  manufacturer.id={}
+            AND chip.user= {}
+            ;
+        """.format(m_id, u_id)
+    ).fetchall()
+    return objects
+
+
 def query_images_by_p(p_id):
     objects = db.session.execute(
         """
@@ -815,6 +972,23 @@ def query_images_by_p(p_id):
             WHERE product.id={}
             ;
         """.format(p_id)
+    ).fetchall()
+    return objects
+
+
+def query_images_by_p_for_user(p_id, u_id):
+    objects = db.session.execute(
+        """
+            SELECT defect.defect_image_name as file
+            FROM defect
+            INNER JOIN chip
+                on defect.chip = chip.id
+            INNER JOIN product
+                on chip.product = product.id
+            WHERE product.id={}
+            AND chip.user= {}
+            ;
+        """.format(p_id, u_id)
     ).fetchall()
     return objects
 
@@ -833,7 +1007,45 @@ def query_images_by_d(d_id):
     return objects
 
 
-def get_defects_list(m_id, p_id, d_id):
+def query_images_by_d_for_user(d_id, u_id):
+    objects = db.session.execute(
+        """
+            SELECT defect.defect_image_name as file
+            FROM defect
+            INNER JOIN defect_type
+                on defect.defect_type = defect_type.id
+            WHERE defect_type.id={}
+            AND chip.user= {}
+            ;
+        """.format(d_id, u_id)
+    ).fetchall()
+    return objects
+
+
+def get_defects_list(m_id, p_id, d_id, u_id):
+    defects_list = None
+    if (u_id == -1): 
+        defects_list = get_defects_list_for_default_user(m_id, p_id, d_id)
+    elif (m_id == -1 and p_id == -1 and d_id == -1):
+        defects_list = query_defects_by_all_for_user(u_id)
+    elif (m_id > -1 and p_id > -1 and d_id > -1):
+        defects_list = query_defects_by_three_filters_for_user(m_id, p_id, d_id, u_id)
+    elif (m_id > -1 and p_id > -1):
+        defects_list = query_defects_by_m_p_for_user(m_id, p_id, u_id)
+    elif (m_id > -1 and d_id > -1):
+        defects_list = query_defects_by_m_d_for_user(m_id, d_id, u_id)
+    elif (p_id > -1 and d_id > -1):
+        defects_list = query_defects_by_p_d_for_user(p_id, d_id, u_id)
+    elif (m_id > -1):
+        defects_list = query_defects_by_m_for_user(m_id, u_id)
+    elif (p_id > -1):
+        defects_list = query_defects_by_p_for_user(p_id, u_id)
+    elif (d_id > -1):
+        defects_list = query_defects_by_d_for_user(d_id, u_id)
+    return defects_list
+
+
+def get_defects_list_for_default_user(m_id, p_id, d_id):
     defects_list = None
     if (m_id == -1 and p_id == -1 and d_id == -1):
         defects_list = query_defects_by_all()
@@ -879,6 +1091,32 @@ def query_defects_by_all():
     return objects
 
 
+def query_defects_by_all_for_user(u_id):
+    objects = db.session.execute(
+        """
+            SELECT manufacturer.id as m_id, manufacturer.name as m_name,
+            product.id as p_id, product.name as p_name,
+            defect_type.id as d_id,
+            defect_type.name as d_name,
+            defect_type.primary_type as d_primary,
+            defect_type.secondary_type as d_secondary,
+            defect.defect_image_name as d_image
+            FROM defect
+            INNER JOIN defect_type
+                on defect.defect_type = defect_type.id
+            INNER JOIN chip
+                on defect.chip = chip.id
+            INNER JOIN product
+                on chip.product = product.id
+            INNER JOIN manufacturer
+                on chip.manufacturer = manufacturer.id
+            WHERE  chip.user= {}
+            ;
+        """.format(u_id)
+    ).fetchall()
+    return objects
+
+
 def query_defects_by_three_filters(m_id, p_id, d_id):
     objects = db.session.execute(
         """
@@ -903,6 +1141,35 @@ def query_defects_by_three_filters(m_id, p_id, d_id):
             AND defect_type.id= {}
             ;
         """.format(m_id, p_id, d_id)
+    ).fetchall()
+    return objects
+
+
+def query_defects_by_three_filters_for_user(m_id, p_id, d_id, u_id):
+    objects = db.session.execute(
+        """
+            SELECT manufacturer.id, manufacturer.name as m_name,
+            product.id as p_id, product.name as p_name,
+            defect_type.id as d_id,
+            defect_type.name as d_name,
+            defect_type.primary_type as d_primary,
+            defect_type.secondary_type as d_secondary,
+            defect.defect_image_name as d_image
+            FROM defect
+            INNER JOIN defect_type
+                on defect.defect_type = defect_type.id
+            INNER JOIN chip
+                on defect.chip = chip.id
+            INNER JOIN product
+                on chip.product = product.id
+            INNER JOIN manufacturer
+                on chip.manufacturer = manufacturer.id
+            WHERE  manufacturer.id= {}
+            AND product.id={}
+            AND defect_type.id= {}
+            AND chip.user= {}
+            ;
+        """.format(m_id, p_id, d_id, u_id)
     ).fetchall()
     return objects
 
@@ -934,6 +1201,34 @@ def query_defects_by_m_p(m_id, p_id):
     return objects
 
 
+def query_defects_by_m_p_for_user(m_id, p_id, u_id):
+    objects = db.session.execute(
+        """
+            SELECT manufacturer.id, manufacturer.name as m_name,
+            product.id as p_id, product.name as p_name,
+            defect_type.id as d_id,
+            defect_type.name as d_name,
+            defect_type.primary_type as d_primary,
+            defect_type.secondary_type as d_secondary,
+            defect.defect_image_name as d_image
+            FROM defect
+            INNER JOIN defect_type
+                on defect.defect_type = defect_type.id
+            INNER JOIN chip
+                on defect.chip = chip.id
+            INNER JOIN product
+                on chip.product = product.id
+            INNER JOIN manufacturer
+                on chip.manufacturer = manufacturer.id
+            WHERE  manufacturer.id= {}
+            AND product.id={}
+            AND chip.user= {}
+            ;
+        """.format(m_id, p_id, u_id)
+    ).fetchall()
+    return objects
+
+
 def query_defects_by_m_d(m_id, d_id):
     objects = db.session.execute(
         """
@@ -957,6 +1252,34 @@ def query_defects_by_m_d(m_id, d_id):
             AND defect_type.id= {}
             ;
         """.format(m_id, d_id)
+    ).fetchall()
+    return objects
+
+
+def query_defects_by_m_d_for_user(m_id, d_id, u_id):
+    objects = db.session.execute(
+        """
+            SELECT manufacturer.id, manufacturer.name as m_name,
+            product.id as p_id, product.name as p_name,
+            defect_type.id as d_id,
+            defect_type.name as d_name,
+            defect_type.primary_type as d_primary,
+            defect_type.secondary_type as d_secondary,
+            defect.defect_image_name as d_image
+            FROM defect
+            INNER JOIN defect_type
+                on defect.defect_type = defect_type.id
+            INNER JOIN chip
+                on defect.chip = chip.id
+            INNER JOIN product
+                on chip.product = product.id
+            INNER JOIN manufacturer
+                on chip.manufacturer = manufacturer.id
+            WHERE  manufacturer.id= {}
+            AND defect_type.id= {}
+            AND chip.user= {}
+            ;
+        """.format(m_id, d_id, u_id)
     ).fetchall()
     return objects
 
@@ -988,6 +1311,34 @@ def query_defects_by_p_d(p_id, d_id):
     return objects
 
 
+def query_defects_by_p_d_for_user(p_id, d_id, u_id):
+    objects = db.session.execute(
+        """
+            SELECT manufacturer.id, manufacturer.name as m_name,
+            product.id as p_id, product.name as p_name,
+            defect_type.id as d_id,
+            defect_type.name as d_name,
+            defect_type.primary_type as d_primary,
+            defect_type.secondary_type as d_secondary,
+            defect.defect_image_name as d_image
+            FROM defect
+            INNER JOIN defect_type
+                on defect.defect_type = defect_type.id
+            INNER JOIN chip
+                on defect.chip = chip.id
+            INNER JOIN product
+                on chip.product = product.id
+            INNER JOIN manufacturer
+                on chip.manufacturer = manufacturer.id
+            WHERE product.id={}
+            AND defect_type.id= {}
+            AND chip.user= {}
+            ;
+        """.format(p_id, d_id, u_id)
+    ).fetchall()
+    return objects
+
+
 def query_defects_by_m(m_id):
     objects = db.session.execute(
         """
@@ -1010,6 +1361,33 @@ def query_defects_by_m(m_id):
             WHERE  manufacturer.id= {}
             ;
         """.format(m_id)
+    ).fetchall()
+    return objects
+
+
+def query_defects_by_m_for_user(m_id, u_id):
+    objects = db.session.execute(
+        """
+            SELECT manufacturer.id, manufacturer.name as m_name,
+            product.id as p_id, product.name as p_name,
+            defect_type.id as d_id,
+            defect_type.name as d_name,
+            defect_type.primary_type as d_primary,
+            defect_type.secondary_type as d_secondary,
+            defect.defect_image_name as d_image
+            FROM defect
+            INNER JOIN defect_type
+                on defect.defect_type = defect_type.id
+            INNER JOIN chip
+                on defect.chip = chip.id
+            INNER JOIN product
+                on chip.product = product.id
+            INNER JOIN manufacturer
+                on chip.manufacturer = manufacturer.id
+            WHERE  manufacturer.id= {}
+            AND chip.user= {}
+            ;
+        """.format(m_id, u_id)
     ).fetchall()
     return objects
 
@@ -1040,6 +1418,33 @@ def query_defects_by_p(p_id):
     return objects
 
 
+def query_defects_by_p_for_user(p_id, u_id):
+    objects = db.session.execute(
+        """
+            SELECT manufacturer.id, manufacturer.name as m_name,
+            product.id as p_id, product.name as p_name,
+            defect_type.id as d_id,
+            defect_type.name as d_name,
+            defect_type.primary_type as d_primary,
+            defect_type.secondary_type as d_secondary,
+            defect.defect_image_name as d_image
+            FROM defect
+            INNER JOIN defect_type
+                on defect.defect_type = defect_type.id
+            INNER JOIN chip
+                on defect.chip = chip.id
+            INNER JOIN product
+                on chip.product = product.id
+            INNER JOIN manufacturer
+                on chip.manufacturer = manufacturer.id
+            WHERE product.id={}
+            AND chip.user= {}
+            ;
+        """.format(p_id, u_id)
+    ).fetchall()
+    return objects
+
+
 def query_defects_by_d(d_id):
     objects = db.session.execute(
         """
@@ -1062,5 +1467,32 @@ def query_defects_by_d(d_id):
             WHERE defect_type.id= {}
             ;
         """.format(d_id)
+    ).fetchall()
+    return objects
+
+
+def query_defects_by_d_for_user(d_id, u_id):
+    objects = db.session.execute(
+        """
+            SELECT manufacturer.id, manufacturer.name as m_name,
+            product.id as p_id, product.name as p_name,
+            defect_type.id as d_id,
+            defect_type.name as d_name,
+            defect_type.primary_type as d_primary,
+            defect_type.secondary_type as d_secondary,
+            defect.defect_image_name as d_image
+            FROM defect
+            INNER JOIN defect_type
+                on defect.defect_type = defect_type.id
+            INNER JOIN chip
+                on defect.chip = chip.id
+            INNER JOIN product
+                on chip.product = product.id
+            INNER JOIN manufacturer
+                on chip.manufacturer = manufacturer.id
+            WHERE defect_type.id= {}
+            AND chip.user= {}
+            ;
+        """.format(d_id, u_id)
     ).fetchall()
     return objects
