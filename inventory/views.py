@@ -56,15 +56,13 @@ def process_manufacturer(form):
 def process_product(form, request, manufacturer):
     pspec_file = request.files.getlist('pspec')[0]
     pimage_file = request.files.getlist('pimage')[0]
-    logging.info(pspec_file)
-    logging.info(pimage_file)
     pspec_path = pspec.save(pspec_file)
-    logging.info(pspec_path)
     pimage_path = pimage.save(pimage_file)
-    logging.info(pimage_path)
     product = Product(
         name=form.product.data,
         manufacturer_id=manufacturer.id,
+        total_samples=form.total_samples.data,
+        sample_counter=0,
         spec_file_name=pspec_path,
         spec_image_name=pimage_path,
     )
@@ -117,6 +115,7 @@ def process_archive(request, manufacturer, product, chip):
     index = None
     zfile = zipfile.ZipFile(archive, "r")
     zfile.extractall(os.path.join(temp))
+
     if (not os.path.isdir(os.path.join(image_folder, defect_image_folder, destination))):
         index = 0
         pathlib.Path(
@@ -134,9 +133,16 @@ def process_archive(request, manufacturer, product, chip):
     error_count = 0
     processed_count = 0
     user_name = session.get('username')
+    sample_id = product.sample_counter
+    previous_sample_id = -1
+
     for row in range(row_start, ws.max_row+1):
         try:
-            sample_id = int(ws.cell(row=row, column=1).value)
+            current_sample_id = int(ws.cell(row=row, column=1).value)
+            if (previous_sample_id != current_sample_id):
+                sample_id += 1
+                previous_sample_id = current_sample_id
+
             defect = ws.cell(row=row, column=2).value
             image = ws.cell(row=row, column=3).value
             defect_name = defect.split('|', 2)[0].strip()
@@ -144,19 +150,6 @@ def process_archive(request, manufacturer, product, chip):
             secondary_type = defect.split('|', 2)[2].strip()
             image_path = os.path.join(temp, image).replace("\\", "/")
             img_ext = os.path.splitext(image_path)[1].lower()
-
-            print('-------------------------------------------------------')
-            print(sample_id)
-            print(defect)
-            print(image)
-            print(defect_name)
-            print(primary_type)
-            print(secondary_type)
-            print(image_path)
-            print(img_ext)
-            print(manufacturer.name)
-            print(product.name)
-            print('-------------------------------------------------------')
 
             if (not os.path.isfile(image_path)):
                 logging.info("Image path doesn't exist: " + image_path)
@@ -167,12 +160,6 @@ def process_archive(request, manufacturer, product, chip):
             product_name = product.name if (
                 len(product.name) <= 10) else product.name[0:10]
 
-            print('-------------------------------------------------------')
-            print(manufacturer_name)
-            print(product_name)
-            print(destination)
-            print('-------------------------------------------------------')
-
             secure_image = secure_filename(
                 str(sample_id) + delim +
                 manufacturer_name + delim + product_name
@@ -180,18 +167,10 @@ def process_archive(request, manufacturer, product, chip):
                 + delim + user_name + img_ext
             )
 
-            print('-------------------------------------------------------')
-            print(secure_image)
-            print('-------------------------------------------------------')
-
             dest = os.path.join(
                 destination,
                 secure_image
             ).replace("\\", "/")
-
-            print('-------------------------------------------------------')
-            print(dest)
-            print('-------------------------------------------------------')
 
             os.rename(image_path, os.path.join(
                 image_folder, defect_image_folder, dest))
@@ -219,6 +198,7 @@ def process_archive(request, manufacturer, product, chip):
             logging.error(exception)
             error_count += 1
             return (processed_count, error_count)
+    product.sample_counter = sample_id
     if (processed_count > 0):
         db.session.commit()
     os.chdir(old_working_directory)
@@ -245,6 +225,7 @@ def add_components():
             product = Product.query.filter_by(
                 id=product_id
             ).first()
+            product.total_samples = product.total_samples + form.total_samples.data
             chip = get_or_create_model(
                 Chip, user=session.get('id'),
                 manufacturer=manufacturer.id, product=product.id

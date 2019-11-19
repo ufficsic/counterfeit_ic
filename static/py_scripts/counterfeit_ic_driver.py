@@ -58,7 +58,7 @@ DEFECT_NAME_MAP = {
     'Oxide Breakdown': 'Oxide Breakdown | Electrical | Manufacturing | Process',
     'Re-Worked Wire Bonds': 'Re-Worked Wire Bonds | Mechanical | Bond Wires',
     'Missing Wires': 'Missing Wires | Mechanical | Bond Wires',
-    'Bond Pull Strength': 'Bond Pull Strength | Mechanical | Bond Wires',
+    'Bond fPull Strength': 'Bond Pull Strength | Mechanical | Bond Wires',
     'Color Variations': 'Color Variations | Mechanical | Lead/Balls/Columns',
     'Reworked': 'Reworked | Mechanical | Lead/Balls/Columns',
     'Ghost Markings': 'Ghost Markings | Mechanical | Package',
@@ -79,6 +79,21 @@ DEFECT_NAME_MAP = {
     'Misaligned Window': 'Misaligned Window | Electrical | Manufacturing | Process'
 }
 
+DEFECT_TEMP_MAP = {
+    "Dirty Cavities": "Dirty Cavities",
+    "Distorted Pins": "Distorted Non-uniform Balls or Columns",
+    "Extraneous Markings": "Extraneous Markings",
+    "Misaligned Pins": "Misaligned or Missing Balls or Columns",
+    "Oxidation Corrosion": "Oxidation or Corrosion",
+    "Oxidation or Corrosion": "Oxidation or Corrosion",
+    "Color Variations": "Color Variations",
+    "Contamination Pin": "Contamination",
+    "Improper Textures": "Improper Textures",
+    "Package Mold Variations": "Package Mold Variations",
+    "Corrosion": "Surface Passivation and Corrosion"
+}
+
+
 ACCEPTED_IMAGES = tuple('.jpg .jpe .jpeg .png'.split())
 # SAMPLE_SUBMIT_FORM = Path('sampleSubmitForm.xlsx')
 ZIP_IMAGE_DIR = Path('images')
@@ -88,14 +103,13 @@ SAMPLE_ID = 1
 
 
 def create_workbook(base_dir, files_to_zip, zip_path_name, upload_workbook_path, defect_name_map):
-    # xfile = shutil.copyfile(sample_upload_file_path, upload_workbook_path)
     wb = Workbook()
     ws = wb.get_sheet_by_name(wb.sheetnames[0])
     row = ROW_START
     for image_path, arcname, sample_id in files_to_zip:
         ws.cell(row=row, column=1).value = sample_id
         ws.cell(
-            row=row, column=2).value = defect_name_map[image_path.parent.name]
+            row=row, column=2).value = defect_name_map[DEFECT_TEMP_MAP[image_path.parent.name]]
         ws.cell(row=row, column=3).value = '{}'.format(arcname)
         row += 1
     wb.save(upload_workbook_path)
@@ -115,7 +129,7 @@ def create_zip_archive(base_dir, product_dir, files_to_zip, defect_name_map):
             zf.write(image_path, arcname)
         zf.write(xfile, os.path.basename(xfile))
     shutil.move(zip_name, base_dir.joinpath(
-        manufacturer_dir).joinpath(zip_name))
+        manufacturer_dir).joinpath(product_dir).joinpath(zip_name))
     Path(xfile).unlink()
 
 
@@ -124,16 +138,15 @@ def create_image_upload_archive(path, base_dir, zip_image_dir, accepted_images, 
     total_size = 0.0
     files_to_zip = []
     for file in Path(path).rglob('*'):
-        if file.is_file() and (file.suffix in accepted_images) and (file.parent.name in defect_name_map.keys()):
-            if not file.parent.parent.samefile(product_dir):
+        if file.is_file() and (file.suffix in accepted_images) and (file.parent.name in DEFECT_TEMP_MAP.keys()):
+            if not file.parent.parent.parent.samefile(product_dir):
                 if files_to_zip:
                     create_zip_archive(
                         base_dir, product_dir, files_to_zip, defect_name_map)
-                product_dir = file.parent.parent
+                product_dir = file.parent.parent.parent
                 total_size = 0.0
                 files_to_zip = []
-                print('Processing files for Product: {}'.format(product_dir.name))
-            if file.parent.parent.samefile(product_dir):
+            if file.parent.parent.parent.samefile(product_dir):
                 file_size = file.stat().st_size
                 if ((file_size / 1048576.0) > 100.0):
                     continue
@@ -146,19 +159,17 @@ def create_image_upload_archive(path, base_dir, zip_image_dir, accepted_images, 
                     total_size += file_size
                     sub = PurePosixPath(file.relative_to(base_dir))
                     sub_name = str(sub).replace(' ', '_').replace("/", '_')
-                    file_sample_id = ''
-                    for c in sub.name:
-                        if c.isdigit():
-                            file_sample_id += c
-                        else:
-                            break
-                    file_sample_id_num = 1
+                    file_sample_id_num = -1
+                    sample_dir = file.parent.parent.name
                     try:
-                        file_sample_id_num = int(file_sample_id)
-                    except:
+                        file_sample_id_num = int(sample_dir)
+                    except Exception as e:
+                        print("Invalid Sample ID for Product ", product_dir.name)
                         pass
                     arcname = PurePosixPath(zip_image_dir).joinpath(sub_name)
-                    files_to_zip.append((file, arcname, file_sample_id_num))
+                    print("files_to_zip ", file)
+                    files_to_zip.append(
+                        (file, arcname, file_sample_id_num))
 
     if files_to_zip:
         create_zip_archive(base_dir, product_dir,

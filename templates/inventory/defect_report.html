@@ -10,19 +10,21 @@
     <div class="container">
         <h2 class="body_heading">Defect Report for {{ defect_type.name }} </h2>
 
-        <table class="formal text-center">
+        <table class="formal text-left">
             <tr>
-                <td>Defect Taxonomy</td>
+                <td>
+                    <h5> Defect Taxonomy </h5>
+                </td>
             </tr>
             <tr>
-                <td>Primary Classificiation</td>
+                <td>Primary Classificiation: </td>
                 <td>
                     {{ defect_type.primary_type }}
                 </td>
 
             </tr>
             <tr>
-                <td>Secondary Classificiation</td>
+                <td>Secondary Classificiation: </td>
                 <td>
                     {{ defect_type.secondary_type }}
                 </td>
@@ -70,7 +72,7 @@
                         </td>
                         <td>
                             <div>
-                                {{ report.in_frequency }}
+                                {{ report.frequency }}
                             </div>
                         </td>
                     </tr>

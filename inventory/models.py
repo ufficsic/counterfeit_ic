@@ -21,12 +21,18 @@ class Product(db.Model):
     name = db.Column(db.String(80))
     spec_file_name = db.Column(db.String(80))
     spec_image_name = db.Column(db.String(80))
+    total_samples = db.Column(db.Integer)
+    sample_counter = db.Column(db.Integer)
     manufacturer = db.Column(db.Integer, db.ForeignKey('manufacturer.id'))
     is_approved = db.Column(db.Boolean, default=False)
 
-    def __init__(self, name, manufacturer_id, spec_file_name=None, spec_image_name=None, is_approved=False):
+    def __init__(self, name, manufacturer_id, total_samples, 
+    sample_counter=0, spec_file_name=None, 
+    spec_image_name=None, is_approved=False):
         self.name = name.lower()
         self.manufacturer = manufacturer_id
+        self.total_samples = total_samples
+        self.sample_counter = sample_counter
         self.spec_file_name = spec_file_name
         self.spec_image_name = spec_image_name
         self.is_approved = is_approved

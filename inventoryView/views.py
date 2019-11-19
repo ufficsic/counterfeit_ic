@@ -218,6 +218,7 @@ def display_edit_product(product_id):
         manufacturers = Manufacturer.query.all()
         form = EditProductForm()
         form.product.default = product.name
+        form.total_samples.default = product.total_samples
         form.process()
         return render_template(
             'inventory/edit_product.html',
@@ -242,6 +243,7 @@ def edit_product(product_id):
             ).first()
             product.manufacturer = int(request.form.get('manufacturer'))
             product.name = form.product.data
+            product.total_samples = form.total_samples.data
             if request.files.getlist('pspec')[0]:
                 pspec_file = request.files.getlist('pspec')[0]
                 pspec_path = pspec.save(pspec_file)
@@ -287,6 +289,7 @@ def product_report(product_id):
             Sample.sample_id.label('s_sid'),
             Chip.id.label('c_id'),
             Chip.product.label('p'),
+            Product.total_samples.label('p_samples'),
             DefectType,
             Defect.defect_image_name.label('image'),
         ).filter(
@@ -304,55 +307,18 @@ def product_report(product_id):
         for item in defects_list:
             dmap = def_rep.get(item.DefectType.id, {})
             dmap['name'] = item.DefectType.name
-            defect_id_set.add(item.DefectType.id)
+            dmap['total_samples'] = item.p_samples
             sample_set = dmap.get('samples', set())
             sample_set.add(item.s_sid)
             dmap['samples'] = sample_set
             image_list = dmap.get('images', list())
             image_list.append(item.image)
             dmap['images'] = image_list
+            defect_id_set.add(item.DefectType.id)
             def_rep[item.DefectType.id] = dmap
 
-        defect_id_tuple = tuple(defect_id_set)
-        total_sample_in_product = db.session.execute(
-            """
-            SELECT defect_type.id, COUNT(DISTINCT sample.sample_id) as total
-            FROM sample, defect, chip, defect_type
-            WHERE chip.id = defect.chip
-            AND sample.chip = chip.id
-            AND defect.defect_type = defect_type.id
-            AND chip.product = {}
-            AND defect_type.id IN {};
-            """.format(product_id, defect_id_tuple)
-        ).fetchall()
-
-        total_sample_in_product_map = {
-            f.id: f.total
-            for f in total_sample_in_product
-        }
-
-        total_sample_with_defect = db.session.execute(
-            """
-            SELECT defect_type.id, COUNT(DISTINCT sample.sample_id) as total
-            FROM sample, defect, defect_type
-            WHERE defect.defect_type = defect_type.id
-            AND defect.sample = sample.id
-            AND defect_type.id IN {};
-            """.format(defect_id_tuple)
-        ).fetchall()
-
-        total_sample_with_defect_map = {
-            f.id: f.total
-            for f in total_sample_with_defect
-        }
-
-        total_samples_count = db.session.execute(
-            """
-            SELECT COUNT(DISTINCT sample.sample_id)
-            as total FROM sample;
-            """
-        ).fetchall()
-        total_samples = total_samples_count[0][0]
+        all_sample_count = get_total_samples_from_all_products()
+        total_defect_sample_count = get_sample_count_for_defect(defect_id_set)
 
         all_product_frequency_list = []
         for k in def_rep.keys():
@@ -362,16 +328,10 @@ def product_report(product_id):
             freq_map['images'] = def_rep[k].get('images')
             occurences = len(def_rep[k].get('samples'))
             freq_map['occurences'] = occurences
-            if k in total_sample_in_product_map:
-                freq_map['in_frequency'] = round(
-                    ((float(occurences) / total_sample_in_product_map.get(k)) * 100), 2)
-            else:
-                freq_map['in_frequency'] = 0
-            if k in total_sample_with_defect_map:
-                freq_map['all_frequency'] = round(
-                    ((float(total_sample_with_defect_map.get(k)) / total_samples) * 100), 2)
-            else:
-                freq_map['all_frequency'] = 0
+            freq_map['in_frequency'] = round(
+                ((float(occurences) / def_rep[k].get('total_samples')) * 100), 2)
+            freq_map['all_frequency'] = round(
+                ((float(total_defect_sample_count[k]) / float(all_sample_count)) * 100), 2)
             all_product_frequency_list.append(freq_map)
 
         defect_image_folder = os.path.join(
@@ -516,49 +476,25 @@ def defect_report(defect_id):
             id=defect_id
         ).first()
 
-        defect_types_count = db.session.execute(
-            """
-            SELECT product.id as pid, product.name as pname, manufacturer.id as mid, manufacturer.name as mname,
-            count(DISTINCT sample.sample_id) as occurences
-            FROM defect_type, defect, sample, chip, product, manufacturer
-            WHERE defect_type.id = defect.defect_type
-            AND defect.sample = sample.id
-            And defect.chip = chip.id
-            And chip.product = product.id
-            AND chip.manufacturer = manufacturer.id
-            AND defect_type.id = {};
-            """.format(defect_type.id)
-        ).fetchall()
+        defect_types_count = get_defect_sample_occurences(defect_type.id)
 
-        manufacturer_sample_count = db.session.execute(
-            """
-            SELECT manufacturer.id as mid, count(DISTINCT sample.sample_id) as occurences
-            FROM defect_type, defect, sample, chip, product, manufacturer
-            WHERE defect_type.id = defect.defect_type
-            AND defect.sample = sample.id
-            And defect.chip = chip.id
-            AND chip.manufacturer = manufacturer.id
-            AND defect_type.id = {};
-            """.format(defect_type.id)
-        ).fetchall()
-
-        manufacturer_sample_count_map = {
-            f.mid: f.occurences
-            for f in manufacturer_sample_count
-        }
-
-        reports = []
+        def_rep = []
+        product_id_set = set()
         for item in defect_types_count:
             def_map = {}
             def_map['id'] = item.pid
+            product_id_set.add(item.pid)
             def_map['name'] = item.pname
             def_map['manufacturer'] = item.mname
             def_map['occurences'] = item.occurences
-            if item.mid in manufacturer_sample_count_map:
-                def_map['in_frequency'] = round(
-                        ((float(item.occurences) / manufacturer_sample_count_map.get(item.mid)) * 100), 2)
-            else:
-                def_map['in_frequency'] = 0
+            def_rep.append(def_map)
+
+        product_total_samples_map = get_product_total_samples_map(product_id_set)
+
+        reports = []
+        for def_map in def_rep:
+            def_map['frequency'] = round(
+                ((float(def_map['occurences']) / product_total_samples_map[def_map['id']]) * 100), 2)
             reports.append(def_map)
 
         return render_template(
@@ -653,7 +589,7 @@ def download_images():
 
 
 def get_image_zip(m_id, p_id, d_id, u_id):
-    images = get_images(m_id, p_id, d_id , u_id)
+    images = get_images(m_id, p_id, d_id, u_id)
     zip_file = compress_files(images)
     return zip_file
 
@@ -743,6 +679,67 @@ def query_images_by_all():
         """
     ).fetchall()
     return objects
+
+
+def get_total_samples_from_all_products():
+    objects = db.session.query(
+            func.sum(Product.total_samples).label('total_samples')
+        ).first()
+    return objects[0]
+
+
+def get_sample_count_for_defect(defect_ids):
+    defect_ids_list = '(' + ",".join([str(i) for i in defect_ids]) + ')'
+    objects = db.session.execute(
+        """
+        SELECT defect_type.id as id, 
+        count(DISTINCT sample.sample_id) as total_samples
+        FROM sample, defect, defect_type
+        WHERE defect.defect_type = defect_type.id
+        AND defect.sample = sample.id
+        AND defect_type.id IN {}
+        GROUP BY defect_type.id;
+        """.format(defect_ids_list)
+    ).fetchall()
+    sample_count_for_defect_map = {
+            f.id: f.total_samples
+            for f in objects
+    }
+    return sample_count_for_defect_map
+
+
+def get_defect_sample_occurences(defect_type_id):
+    objects = db.session.execute(
+        """
+        SELECT manufacturer.name as mname, 
+        product.name as pname, product.id as pid,  
+        count(DISTINCT sample.sample_id) as occurences
+        FROM defect_type, defect, sample, chip, product, manufacturer
+        WHERE defect_type.id = defect.defect_type
+        AND defect.sample = sample.id
+        And defect.chip = chip.id
+        And chip.manufacturer = manufacturer.id
+        And chip.product = product.id
+        AND defect_type.id = {}
+        GROUP BY product.id;
+        """.format(defect_type_id)
+    ).fetchall()
+    return objects
+
+def get_product_total_samples_map(product_ids):
+    product_ids_list = '(' + ",".join([str(i) for i in product_ids]) + ')'
+    objects = db.session.execute(
+        """
+        SELECT product.id, product.total_samples
+        FROM product
+        WHERE product.id IN {};
+        """.format(product_ids_list)
+    ).fetchall()
+    product_total_samples_map = {
+            f.id: f.total_samples
+            for f in objects
+    }
+    return product_total_samples_map
 
 
 def query_images_by_all_for_user(u_id):
@@ -1024,12 +1021,13 @@ def query_images_by_d_for_user(d_id, u_id):
 
 def get_defects_list(m_id, p_id, d_id, u_id):
     defects_list = None
-    if (u_id == -1): 
+    if (u_id == -1):
         defects_list = get_defects_list_for_default_user(m_id, p_id, d_id)
     elif (m_id == -1 and p_id == -1 and d_id == -1):
         defects_list = query_defects_by_all_for_user(u_id)
     elif (m_id > -1 and p_id > -1 and d_id > -1):
-        defects_list = query_defects_by_three_filters_for_user(m_id, p_id, d_id, u_id)
+        defects_list = query_defects_by_three_filters_for_user(
+            m_id, p_id, d_id, u_id)
     elif (m_id > -1 and p_id > -1):
         defects_list = query_defects_by_m_p_for_user(m_id, p_id, u_id)
     elif (m_id > -1 and d_id > -1):

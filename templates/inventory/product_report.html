@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block title %}Couinterfeit-IC{% endblock %}
-{% block head %} {{ super() }}{% endblock %}
+{% block head %}
+{{ super() }}
+<link href="{{ url_for('static', filename='css/image_gallery_modal.css') }}" rel="stylesheet">{% endblock %}
 {% block content %}
 
 <div class="container grey_block">
@@ -9,10 +11,14 @@
 
     <h2 class="body_heading">Product Report for {{ product.name }} </h2>
 
-    <table class="formal text-center">
+    <table class="formal">
         <tr>
-            <td>Manufacturer</td>
+            <td>Manufacturer: </td>
             <td>{{ manufacturer.name.capitalize() }}</td>
+        </tr>
+        <tr>
+            <td>Total Samples Tested: </td>
+            <td>{{ product.total_samples }}</td>
         </tr>
         <tr>
             <td>Product Specification: </td>
@@ -35,20 +41,8 @@
                 </div>
             </td>
         </tr>
-        <!-- <tr>
-            <td>Total Number of Components in Database: </td>
-            <td>{{ product.name }}</td>
-        </tr> -->
     </table>
-
-
-    <!-- <div>
-        <h3>Most Common Identified Defects in {{ product.name }} </h3>
-    </div> -->
     <table class="table formal text-center">
-        <!-- <caption>
-            <h3>Most Common Identified Defects in ***** </h3>
-        </caption> -->
 
         <thead>
             <tr>
@@ -79,11 +73,71 @@
                     </div>
                 </td>
                 <td>
-                    <div>
-                        <a href="{{ url_for('static', filename=defect_image_folder + '/' + report.images[0] ) }}"
-                            onclick="window.open(this.href, 'newwindow', 'width=400, height=400, resizable=yes, scrollbars=yes'); return false;">
-                            View
-                        </a>
+                    {% set reports_index = loop.index %}
+                    <div class="row" id="gallery" data-toggle="modal"
+                        data-target="{{ "#exampleModal" + reports_index|string }}">
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <button type="button" class="btn btn-info"
+                                data-target="{{ "#carouselExample" + reports_index|string }}"
+                                data-slide-to="0">View</button>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="{{ "exampleModal" + reports_index|string }}" tabindex="-1" role="dialog"
+                        aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="{{ "carouselExample" + reports_index|string }}" class="carousel slide"
+                                        data-ride="carousel">
+                                        <ol class="carousel-indicators">
+                                            {% for report_image in report.images %}
+                                            <li data-target="{{ "#carouselExample" + reports_index|string }}"
+                                                data-slide-to="{{loop.index}}" {% if loop.index == 1 %} class="active"
+                                                {% endif %}></li>
+                                            {% endfor %}
+                                        </ol>
+                                        <div class="carousel-inner">
+                                            {% for report_image in report.images %}
+                                            {% if loop.index == 1 %}
+                                            <div class="carousel-item active">
+                                                <img class="d-block w-100"
+                                                    src="{{ url_for('static', filename=defect_image_folder + '/' + report_image ) }}"
+                                                    alt="First slide">
+                                            </div>
+
+                                            {% else %}
+                                            <div class="carousel-item">
+                                                <img class="d-block w-100"
+                                                    src="{{ url_for('static', filename=defect_image_folder + '/' + report_image ) }}"
+                                                    alt="Second slide">
+                                            </div>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                        <a class="carousel-control-prev"
+                                            href="{{ "#carouselExample" + reports_index|string }}" role="button"
+                                            data-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next"
+                                            href="{{ "#carouselExample" + reports_index|string }}" role="button"
+                                            data-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </td>
                 <td>
