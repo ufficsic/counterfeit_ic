@@ -234,7 +234,6 @@ def display_edit_product(product_id):
 @app.route('/edit/products/<int:product_id>/', methods=['GET', 'POST'])
 @contributor_required
 def edit_product(product_id):
-    print('edit product')
     form = EditProductForm()
     if form.validate_on_submit():
         try:
@@ -284,54 +283,38 @@ def product_report(product_id):
             Product.id == product_id
         ).first()
 
-        defects_list = db.session.query(
-            Sample.id.label('s_id'),
-            Sample.sample_id.label('s_sid'),
-            Chip.id.label('c_id'),
-            Chip.product.label('p'),
-            Product.total_samples.label('p_samples'),
-            DefectType,
-            Defect.defect_image_name.label('image'),
-        ).filter(
-            Chip.id == Sample.chip
-        ).filter(
-            Sample.id == Defect.sample
-        ).filter(
-            Defect.defect_type == DefectType.id
-        ).filter(
-            Chip.product == product_id
-        ).all()
+        defects_list = get_product_defects_list(product_id)
 
         def_rep = {}
         defect_id_set = set()
         for item in defects_list:
-            dmap = def_rep.get(item.DefectType.id, {})
-            dmap['name'] = item.DefectType.name
-            dmap['total_samples'] = item.p_samples
+            dmap = def_rep.get(item.dt_id, {})
+            dmap['name'] = item.dt_name
+            dmap['total_samples'] = item.p_total_samples
             sample_set = dmap.get('samples', set())
-            sample_set.add(item.s_sid)
+            sample_set.add(item.s_sample_id)
             dmap['samples'] = sample_set
             image_list = dmap.get('images', list())
-            image_list.append(item.image)
+            image_list.append(item.d_image)
             dmap['images'] = image_list
-            defect_id_set.add(item.DefectType.id)
-            def_rep[item.DefectType.id] = dmap
+            defect_id_set.add(item.dt_id)
+            def_rep[item.dt_id] = dmap
 
         all_sample_count = get_total_samples_from_all_products()
         total_defect_sample_count = get_sample_count_for_defect(defect_id_set)
 
         all_product_frequency_list = []
-        for k in def_rep.keys():
+        for dt_id in def_rep.keys():
             freq_map = {}
-            freq_map['defect_type_id'] = k
-            freq_map['defect_name'] = def_rep[k].get('name')
-            freq_map['images'] = def_rep[k].get('images')
-            occurences = len(def_rep[k].get('samples'))
+            freq_map['defect_type_id'] = dt_id
+            freq_map['defect_name'] = def_rep[dt_id].get('name')
+            freq_map['images'] = def_rep[dt_id].get('images')
+            occurences = len(def_rep[dt_id].get('samples'))
             freq_map['occurences'] = occurences
             freq_map['in_frequency'] = round(
-                ((float(occurences) / def_rep[k].get('total_samples')) * 100), 2)
+                ((float(occurences) / def_rep[dt_id].get('total_samples')) * 100), 2)
             freq_map['all_frequency'] = round(
-                ((float(total_defect_sample_count[k]) / float(all_sample_count)) * 100), 2)
+                ((float(total_defect_sample_count[dt_id]) / float(all_sample_count)) * 100), 2)
             all_product_frequency_list.append(freq_map)
 
         defect_image_folder = os.path.join(
@@ -586,6 +569,26 @@ def download_images():
         except Exception as exception:
             flash('Error downloading images!', 'error')
     return redirect(url_for('select_image_download'))
+
+def get_product_defects_list(product_id):
+    objects = db.session.execute(
+        """
+            SELECT product.id as p_id, product.total_samples as p_total_samples,
+            sample.sample_id as s_sample_id,
+            defect_type.id as dt_id, defect_type.name as dt_name,
+            defect.defect_image_name as d_image
+            FROM manufacturer, product, chip, sample, defect_type, defect
+            WHERE manufacturer.id = product.manufacturer
+            AND product.id = chip.product
+            AND chip.id = sample.chip
+            AND defect_type.id = defect.defect_type
+            AND defect.chip = chip.id
+            AND defect.sample = sample.id
+            AND product.id = {}
+        ;
+        """.format(product_id)
+    ).fetchall()
+    return objects
 
 
 def get_image_zip(m_id, p_id, d_id, u_id):
