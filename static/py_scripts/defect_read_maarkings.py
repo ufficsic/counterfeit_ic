@@ -9,4 +9,6 @@
     "Improper Textures": ["Improper Textures"],
     "Package Mold Variations": ["Package Mold Variations"],
     "Surface Passivation and Corrosion": ["Corrosion"],
+    "Tooling Marks": ['Tooling Marks'],
+    "Fine or Gross Leak": ['Fine or Gross Leak (Hermetic)']
 }

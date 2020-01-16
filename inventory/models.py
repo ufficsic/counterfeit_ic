@@ -26,9 +26,9 @@ class Product(db.Model):
     manufacturer = db.Column(db.Integer, db.ForeignKey('manufacturer.id'))
     is_approved = db.Column(db.Boolean, default=False)
 
-    def __init__(self, name, manufacturer_id, total_samples, 
-    sample_counter=0, spec_file_name=None, 
-    spec_image_name=None, is_approved=False):
+    def __init__(self, name, manufacturer_id, total_samples,
+                 sample_counter=0, spec_file_name=None,
+                 spec_image_name=None, is_approved=False):
         self.name = name.lower()
         self.manufacturer = manufacturer_id
         self.total_samples = total_samples
@@ -74,7 +74,7 @@ class Defect(db.Model):
     chip = db.Column(db.Integer, db.ForeignKey('chip.id'))
     sample = db.Column(db.Integer, db.ForeignKey('sample.id'))
     defect_type = db.Column(db.Integer, db.ForeignKey('defect_type.id'))
-    defect_image_name = db.Column(db.String(80))
+    defect_image_name = db.Column(db.String(256))
     creation_date = db.Column(db.DateTime)
 
     def __init__(self, chip_id, sample_id, defect_type_id, defect_image_name):

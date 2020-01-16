@@ -84,13 +84,27 @@ DEFECT_TEMP_MAP = {
     "Distorted Pins": "Distorted Non-uniform Balls or Columns",
     "Extraneous Markings": "Extraneous Markings",
     "Misaligned Pins": "Misaligned or Missing Balls or Columns",
+    'Misaligned': "Misaligned or Missing Balls or Columns",
     "Oxidation Corrosion": "Oxidation or Corrosion",
     "Oxidation or Corrosion": "Oxidation or Corrosion",
     "Color Variations": "Color Variations",
     "Contamination Pin": "Contamination",
+    "Contamination": "Contamination",
+    "Contamination Pins": "Contamination",
     "Improper Textures": "Improper Textures",
     "Package Mold Variations": "Package Mold Variations",
-    "Corrosion": "Surface Passivation and Corrosion"
+    "Corrosion": "Surface Passivation and Corrosion",
+    "Package Damage": 'Package Damage',
+    "Fine or Gross Leak": 'Fine or Gross Leak (Hermetic)',
+    'Sanding Grinding Marks': 'Sanding or Grinding Marks',
+    'Dents': 'Dents, Damages, or Bent',
+    'Markings': 'Markings',
+    'Color Variaitions-Fade': 'Color Variations or Fade',
+    'Ghost Markings': 'Ghost Markings',
+    'Texture Variations': 'Improper Textures',
+    'Texture Variation': 'Improper Textures',
+    'Tooling Marks': 'Tooling Marks',
+    'Burned Markings': 'Burned Markings'
 }
 
 
