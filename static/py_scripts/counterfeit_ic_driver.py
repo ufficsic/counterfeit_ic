@@ -107,6 +107,76 @@ DEFECT_TEMP_MAP = {
     'Burned Markings': 'Burned Markings'
 }
 
+DEFECT_SEQUENCE_MAP = {
+    'ML7': 'Misaligned or Missing Balls or Columns',
+    2: 'No ESD Bags for ESD Sensitive Devices',
+    3: 'Lead Re-attachment',
+    4: 'Defect Name',
+    5: 'Oxidation or Corrosion',
+    6: 'Die Damage or Extraneous Markings',
+    7: 'Delamination',
+    8: 'Mechanical Interfaces Intermetallic Growth',
+    9: 'Improper Textures',
+    10: 'Pin Marker Filled or Missing',
+    11: 'Surface Impurities',
+    12: 'Fine or Gross Leak (Hermetic)',
+    13: 'Threshold Variation',
+    14: 'Package Contamination',
+    15: 'Invalid OCM or OEM Shipping Labels',
+    16: 'Parasitic Transistors',
+    17: 'Invalid Lot Code',
+    18: 'Tooling Marks',
+    19: 'Package Mold Variations',
+    20: 'No Moisture Protection for Moisture Sensitive Devices',
+    21: 'Incorrect Dimensions or Weight',
+    22: 'TDDB',
+    23: 'Markings',
+    24: 'Dirty Cavities',
+    25: 'Surface Passivation and Corrosion',
+    26: 'Contamination',
+    27: 'Abnormal Package Conditions',
+    28: 'Resistive Open or Short',
+    29: 'Sanding or Grinding Marks',
+    30: 'Incorrect Dimensions',
+    31: 'Resurfacing or Blacktopping',
+    32: 'Poor Connection',
+    33: 'Out-of-Spec Leakage Current',
+    34: 'Crystal Imperfection',
+    35: 'Multiple Date Codes Within Lot',
+    36: 'Mechanical Interfaces Fatigue',
+    37: 'Invalid OCM or OEM Packaging',
+    38: 'Wrong Die',
+    39: 'Color Variations or Fade',
+    40: 'Improper Materials (Seals,Epoxies, Dielectrics, etc)',
+    41: 'Invalid Markings',
+    42: 'Package Damage',
+    43: 'Incorrect Temp Profile',
+    44: 'Poor or Inconsistent Die Attach',
+    45: 'Poor or Inconsistent Lead Dress or Lead Frame',
+    46: 'Oxide Breakdown',
+    47: 'Re-Worked Wire Bonds',
+    48: 'Missing Wires',
+    49: 'Bond fPull Strength',
+    50: 'Color Variations',
+    51: 'Reworked',
+    52: 'Ghost Markings',
+    53: 'Missing Contact Windows',
+    54: 'Distorted Non-uniform Balls or Columns',
+    55: 'Wrong Materials',
+    56: 'Missing Die',
+    57: 'Fine Cracks',
+    58: 'Dents, Damaged, or Bent',
+    59: 'Burned Markings',
+    60: 'Part Orientation within Packaging',
+    61: 'Missing or Forged Paperwork',
+    62: 'Extraneous Markings',
+    63: 'Broken Wires',
+    64: 'Delay Defects',
+    65: 'Gross Cracks',
+    66: 'Improper Die Markings',
+    67: 'Misaligned Window'
+}
+
 
 ACCEPTED_IMAGES = tuple('.jpg .jpe .jpeg .png'.split())
 # SAMPLE_SUBMIT_FORM = Path('sampleSubmitForm.xlsx')
@@ -200,14 +270,15 @@ def create_archive(path):
 
 
 if __name__ == "__main__":
-    try:
-        path = input(
-            "Enter the absolute path of the folder containing the images to be zipped: ")
-        if not path:
-            raise Exception(
-                'Please Enter a valid path containing the images to be zipped!')
-        create_archive(path)
-    except Exception as e:
-        print('------------------ERROR--------------------------')
-        print(e)
-        print('-------------------------------------------------')
+    print(DEFECT_NAME_MAP.keys())
+    # try:
+    #     path = input(
+    #         "Enter the absolute path of the folder containing the images to be zipped: ")
+    #     if not path:
+    #         raise Exception(
+    #             'Please Enter a valid path containing the images to be zipped!')
+    #     create_archive(path)
+    # except Exception as e:
+    #     print('------------------ERROR--------------------------')
+    #     print(e)
+    #     print('-------------------------------------------------')
