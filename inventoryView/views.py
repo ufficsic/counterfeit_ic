@@ -625,7 +625,7 @@ def get_images(m_id, p_id, d_id, u_id):
     images = None
     if (u_id == -1):
         images = get_images_for_default_user(m_id, p_id, d_id)
-    if (m_id == -1 and p_id == -1 and d_id == -1):
+    elif (m_id == -1 and p_id == -1 and d_id == -1):
         images = query_images_by_all_for_user(u_id)
     elif (m_id > -1 and p_id > -1 and d_id > -1):
         images = query_images_by_three_filters_for_user(m_id, p_id, d_id, u_id)
@@ -920,7 +920,6 @@ def query_images_by_p_d(p_id, d_id):
                 on chip.product = product.id
             WHERE product.id={}
             AND defect_type.id={}
-            AND chip.user= {}
             ;
         """.format(p_id, d_id)
     ).fetchall()
