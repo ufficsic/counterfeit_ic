@@ -91,7 +91,7 @@ lml==0.0.1
 locket==0.2.0
 lxml==4.2.1
 macholib==1.11
-Mako==1.0.7
+Mako==1.2.2
 MarkupSafe==1.0
 marshmallow==2.15.0
 marshmallow-sqlalchemy==0.13.2
